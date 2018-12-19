@@ -1,5 +1,9 @@
 # factoryT (WIP)
+
+> pronounced like `ˈfakt(ə)rē tē`
+
 Library for building JavaScript/TypeScript objects... with strong typing in mind
+
 
 ## API
 See [tests](./src/factory-t.test.ts) for usage details
