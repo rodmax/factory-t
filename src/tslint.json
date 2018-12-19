@@ -1,0 +1,91 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended",
+        "tslint-eslint-rules"
+    ],
+    "rulesDirectory": [
+        "tslint-consistent-codestyle"
+    ],
+    "rules": {
+        "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-snake-case"],
+        "quotemark": [true, "single"],
+        "ordered-imports": false,
+        "eofline": false,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": {
+                    "imports": "never",
+                    "exports": "never",
+                    "functions": "ignore",
+                    "objects": "always",
+                    "arrays": "always",
+                    "typeLiterals": "ignore"
+                },
+                "esSpecCompliant": true
+            }
+        ],
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+        "object-literal-sort-keys": false,
+        "object-literal-key-quotes": [true, "as-needed"],
+        "no-consecutive-blank-lines": [true, 2],
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "no-var-requires": false,
+        "only-arrow-functions": false,
+        "space-before-function-paren": [true, { "anonymous": "always", "named": "never" }],
+        "interface-name": false,
+        "no-unused-expression": [true, "allow-fast-null-checks"],
+        "no-duplicate-imports": true,
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-module",
+            "check-separator",
+            "check-type",
+            "check-typecast",
+            "check-preblock"
+        ],
+        "no-any": true,
+        "typedef": [
+            true,
+            "call-signature",
+            "parameter",
+            "property-declaration",
+            "member-variable-declaration"
+        ],
+
+        "no-duplicate-case": true,
+        "no-inner-declarations": true,
+        "no-invalid-regexp": true,
+        "no-invalid-this": true,
+        "ter-no-irregular-whitespace": true,
+        "ter-no-sparse-arrays": true,
+        "valid-typeof": true,
+        "array-bracket-spacing": [true, "never"],
+        "brace-style": [true, "1tbs", { "allowSingleLine": true }],
+        "ter-prefer-arrow-callback": true,
+        "ban": [true,
+            { "name": "fit", "message": "Remove focus from your tests" },
+            { "name": "fdescribe", "message": "Remove focus from your tests" }
+        ],
+        "max-line-length": [true, { "limit": 120, "ignore-pattern": "^import {(.*?)}" }],
+
+        "naming-convention": [
+            true,
+            { "type": "type", "format": "PascalCase" },
+            { "type": "enumMember", "format": ["PascalCase", "UPPER_CASE"] }
+        ],
+
+        "space-in-parens": [true, "never"],
+        "ter-indent": [true, 4, { "SwitchCase": 1, "MemberExpression": "off" }],
+        "block-spacing": [true, "never"],
+        "no-multi-spaces": { "severity": "warn" },
+
+        "object-curly-spacing": [true, "always"]
+
+    },
+    "jsRules": {}
+}

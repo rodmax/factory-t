@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "outDir": "build",
+        "noUnusedLocals": true,
+        "noImplicitThis": true,
+        "noUnusedParameters": true,
+        "baseUrl": "./",
+        "target": "es6",
+        "jsx": "react",
+        "module": "commonjs",
+        "lib": [
+            "es2015",
+            "es2017",
+            "dom"
+        ],
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "strictFunctionTypes": true,
+        "alwaysStrict": true,
+        "allowJs": true,
+        "resolveJsonModule": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
