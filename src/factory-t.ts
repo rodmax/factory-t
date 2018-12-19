@@ -1,3 +1,33 @@
+/**
+ *  Set of  "MakePropFn" helpers
+ */
+export const INDEX_KEY = (context: {index: number}) => context.index;
+
+/**
+ * @returns MakePropFn that generates values sequence from arrayOfValues
+ * @param arrayOfValues array of values
+ */
+export function makeSequense<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K> {
+    const size = arrayOfValues.length;
+    // NOTE: we use index - 1 due to factory starts index from 1 but array starts from 0
+    return ({ index }) => arrayOfValues[(index - 1) % size];
+}
+
+/**
+ * @returns MakePropFn that generates enum values sequence
+ * @param obj enum instance
+ */
+export function makeSequenseFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K> {
+    const o = obj as {[key: string]: T[K]}; // HACK for type casting
+    const arr = Object.keys(o).map(k => o[k] as T[K]);
+    return makeSequense(arr);
+
+}
+
+
+/**
+ * Class that implements factory function specified by config object
+ */
 export class FactoryT<T extends object> {
 
     private propMakers: Array<PropMaker<T, keyof T>>;
@@ -74,8 +104,6 @@ interface PossibleBuildListParams<T> {
     partials: Array<Partial<T>>;
     partial?: Partial<T>;
 }
-
-export const INDEX_KEY = (context: {index: number}) => context.index;
 
 
 function createPropMakers<T>(

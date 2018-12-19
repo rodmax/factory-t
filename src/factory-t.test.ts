@@ -1,4 +1,4 @@
-import { FactoryT, INDEX_KEY } from './factory-t';
+import { FactoryT, INDEX_KEY, makeSequense, makeSequenseFromEnum } from './factory-t';
 
 
 describe(FactoryT.name, () => {
@@ -169,6 +169,7 @@ describe(FactoryT.name, () => {
             }
         );
     });
+
     describe(FactoryT.prototype.extends.name + '(...)', () => {
 
         test('creates new factory that extends base factory', () => {
@@ -197,4 +198,43 @@ describe(FactoryT.name, () => {
             expect(extendedFactory2.build()).toEqual({ name: 'base-name', type: 'BASE', newKey: 10 });
         });
     });
+
+    describe('function ' + makeSequense.name + '(...)', () => {
+        it('returns "make" function which generates values from passed array', () => {
+            interface Data {
+                name: string;
+            }
+
+            const dataFactory = new FactoryT<Data>({
+                name: makeSequense(['one', 'two']),
+            });
+            expect(dataFactory.buildList({ count: 3 })).toEqual([
+                { name: 'one' },
+                { name: 'two' },
+                { name: 'one' },
+            ]);
+        });
+    });
+
+    describe('function ' + makeSequenseFromEnum.name + '(...)', () => {
+        it('returns "make" function which generates values from passed enum', () => {
+            interface Data {
+                type: DataType;
+            }
+            enum DataType {
+                ONE = 'ONE',
+                TWO = 'TWO',
+            }
+
+            const dataFactory = new FactoryT<Data>({
+                type: makeSequenseFromEnum(DataType),
+            });
+            expect(dataFactory.buildList({ count: 3 })).toEqual([
+                { type: DataType.ONE },
+                { type: DataType.TWO },
+                { type: DataType.ONE },
+            ]);
+        });
+    });
+
 });
