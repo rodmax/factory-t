@@ -1,5 +1,7 @@
 # factoryT (WIP)
 
+[![Build Status](https://travis-ci.org/rodmax/factoryT.svg?branch=master)](https://travis-ci.org/rodmax/factoryT)
+
 > pronounced like `ˈfakt(ə)rē tē`
 
 Library for building JavaScript/TypeScript objects... with strong typing in mind
