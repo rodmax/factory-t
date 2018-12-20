@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+    - "10"
+branches:
+    only:
+        - master
+before_script:
+  - npm ci
+script: npm run pre-push
+cache:
+    directories:
+        - node_modules
