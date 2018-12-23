@@ -43,7 +43,7 @@ export class FactoryT<T extends object> {
             const key = propMaker.key;
 
             if (partial.hasOwnProperty(key)) {
-                obj[key] = partial[key];
+                obj[key] = (partial as T)[key];
             } else {
                 obj[key] = propMaker.make({ partial: obj, index: this.itemsCount });
             }
@@ -165,7 +165,7 @@ function getKeysSortedByDeps<T>(conf: {[key in keyof T]: {deps: Array<keyof T>}}
     });
 
     while (keysWithNoDeps.length) {
-        const keyWithNoDeps = keysWithNoDeps.pop();
+        const keyWithNoDeps = keysWithNoDeps.pop() as keyof T;
         sorted.push(keyWithNoDeps);
         keys.forEach(key => {
             const deps = conf[key].deps;

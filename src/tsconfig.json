@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
-        "outDir": "build",
+        "outDir": "../build",
+        "strict": true,
+        "declaration": true,
         "noUnusedLocals": true,
         "noImplicitThis": true,
         "noUnusedParameters": true,
         "baseUrl": "./",
-        "target": "es6",
+        "target": "es5",
         "jsx": "react",
         "module": "commonjs",
         "lib": [
@@ -17,7 +19,6 @@
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
-        "allowJs": true,
         "resolveJsonModule": true
     },
     "exclude": [
