@@ -2,12 +2,13 @@
   "name": "factory-t",
   "version": "0.1.0",
   "description": "",
-  "main": "src/factory-t.ts",
+  "main": "build/factory-t.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "tslint": "tslint -t stylish './src/**/*.ts'",
     "pre-push": "run-p -l -n test tslint",
+    "build": "rm -rf ./build && tsc --build src",
     "pre-commit": "npm run tslint"
   },
   "pre-push": "pre-push",

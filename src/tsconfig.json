@@ -15,7 +15,6 @@
             "es2017",
             "dom"
         ],
-        "sourceMap": true,
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
