@@ -1,6 +1,6 @@
-# factoryT (WIP)
+# factory-t (WIP)
 
-[![Build Status](https://travis-ci.org/rodmax/factoryT.svg?branch=master)](https://travis-ci.org/rodmax/factoryT)
+[![Build Status](https://travis-ci.org/rodmax/factory-t.svg?branch=master)](https://travis-ci.org/rodmax/factory-t)
 
 > pronounced like `ˈfakt(ə)rē tē`
 
