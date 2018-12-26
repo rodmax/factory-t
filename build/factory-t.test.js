@@ -20,6 +20,14 @@ describe(factory_t_1.FactoryT.name, function () {
                 strWithId: 'id=2',
             });
         });
+        test('recognize null as property value', function () {
+            var factory = new factory_t_1.FactoryT({
+                id: null,
+            });
+            expect(factory.build()).toEqual({
+                id: null,
+            });
+        });
         test('resolve props dependencies', function () {
             var factory = new factory_t_1.FactoryT({
                 C: {

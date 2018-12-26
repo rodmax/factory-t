@@ -105,7 +105,7 @@ function normalizeConfig(config) {
         var configItem = config[key];
         var make;
         var deps;
-        if (typeof configItem === 'object') {
+        if (configItem !== null && (typeof configItem === 'object')) {
             deps = (configItem.deps || []).slice();
             make = configItem.make ||
                 (function () { return configItem.value; });

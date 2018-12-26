@@ -130,7 +130,7 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
         let make: MakePropFn<T, K>;
         let deps: K[];
 
-        if (typeof configItem === 'object') {
+        if (configItem !== null && (typeof configItem === 'object')) {
             deps = [...((configItem as {deps: K[]}).deps || [])];
             make = (configItem as {make: MakePropFn<T, K>}).make ||
                 (() => (configItem as {value: T[K]}).value);
@@ -207,7 +207,7 @@ type FactoryTConfigNormalized<T> = {
 
 type MakePropFn<T, K extends keyof T> = (context: {partial: Readonly<Partial<T>>, index: number}) => T[K];
 
-type ValueGetter<T, K extends keyof T> = MakePropFn<T, K> | T[K];
+type ValueGetter<T, K extends keyof T> = MakePropFn<T, K> | T[K] | null;
 
 interface PropMaker<T, K extends keyof T> {
     key: K;

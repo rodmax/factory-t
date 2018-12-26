@@ -18,6 +18,14 @@ describe(FactoryT.name, () => {
                 strWithId: 'id=2',
             });
         });
+        test('recognize null as property value', () => {
+            const factory = new FactoryT<{id: number}>({
+                id: null,
+            });
+            expect(factory.build()).toEqual({
+                id: null,
+            });
+        });
 
         test('resolve props dependencies', () => {
             const factory = new FactoryT<{

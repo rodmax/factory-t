@@ -44,5 +44,5 @@ declare type MakePropFn<T, K extends keyof T> = (context: {
     partial: Readonly<Partial<T>>;
     index: number;
 }) => T[K];
-declare type ValueGetter<T, K extends keyof T> = MakePropFn<T, K> | T[K];
+declare type ValueGetter<T, K extends keyof T> = MakePropFn<T, K> | T[K] | null;
 export {};
