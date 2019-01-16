@@ -28,6 +28,14 @@ describe(factory_t_1.FactoryT.name, function () {
                 id: null,
             });
         });
+        test('recognize empty array as property value', function () {
+            var factory = new factory_t_1.FactoryT({
+                ids: [],
+            });
+            expect(factory.build()).toEqual({
+                ids: [],
+            });
+        });
         test('resolve props dependencies', function () {
             var factory = new factory_t_1.FactoryT({
                 C: {

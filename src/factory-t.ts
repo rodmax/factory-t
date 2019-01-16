@@ -130,7 +130,7 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
         let make: MakePropFn<T, K>;
         let deps: K[];
 
-        if (configItem !== null && (typeof configItem === 'object')) {
+        if (isObject(configItem)) {
             deps = [...((configItem as {deps: K[]}).deps || [])];
             make = (configItem as {make: MakePropFn<T, K>}).make ||
                 (() => (configItem as {value: T[K]}).value);
@@ -147,6 +147,11 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
         };
         return normalized;
     }, {} as FactoryTConfigNormalized<T>);
+}
+
+// NOTE it is weak attempt to detect object dut should work for normal usage of library
+function isObject<T>(mayBeObj: null | object | T): boolean {
+    return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
 }
 
 

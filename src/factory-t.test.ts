@@ -4,6 +4,7 @@ import { FactoryT, INDEX_KEY, makeSequense, makeSequenseFromEnum } from './facto
 describe(FactoryT.name, () => {
 
     describe(FactoryT.prototype.build.name + '(...)', () => {
+
         test('makes each new instance with incremented index', () => {
             const factory = new FactoryT<{strWithId: string, id: number}>({
                 id: INDEX_KEY,
@@ -18,12 +19,22 @@ describe(FactoryT.name, () => {
                 strWithId: 'id=2',
             });
         });
+
         test('recognize null as property value', () => {
             const factory = new FactoryT<{id: number}>({
                 id: null,
             });
             expect(factory.build()).toEqual({
                 id: null,
+            });
+        });
+
+        test('recognize empty array as property value', () => {
+            const factory = new FactoryT<{ids: number[]}>({
+                ids: [],
+            });
+            expect(factory.build()).toEqual({
+                ids: [],
             });
         });
 

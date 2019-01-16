@@ -105,7 +105,7 @@ function normalizeConfig(config) {
         var configItem = config[key];
         var make;
         var deps;
-        if (configItem !== null && (typeof configItem === 'object')) {
+        if (isObject(configItem)) {
             deps = (configItem.deps || []).slice();
             make = configItem.make ||
                 (function () { return configItem.value; });
@@ -122,6 +122,10 @@ function normalizeConfig(config) {
         };
         return normalized;
     }, {});
+}
+// NOTE it is weak attempt to detect object dut should work for normal usage of library
+function isObject(mayBeObj) {
+    return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
 }
 // Kahn's algorithm (1962) https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 // used for topological sorting or "Dependency resolution"
