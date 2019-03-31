@@ -1,5 +1,4 @@
-import { FactoryT, INDEX_KEY, makeSequense, makeSequenseFromEnum } from './factory-t';
-
+import { FactoryT, INDEX_KEY, makeSequence, makeSequenceFromEnum } from './factory-t';
 
 describe(FactoryT.name, () => {
 
@@ -218,14 +217,14 @@ describe(FactoryT.name, () => {
         });
     });
 
-    describe('function ' + makeSequense.name + '(...)', () => {
+    describe('function ' + makeSequence.name + '(...)', () => {
         it('returns "make" function which generates values from passed array', () => {
             interface Data {
                 name: string;
             }
 
             const dataFactory = new FactoryT<Data>({
-                name: makeSequense(['one', 'two']),
+                name: makeSequence(['one', 'two']),
             });
             expect(dataFactory.buildList({ count: 3 })).toEqual([
                 { name: 'one' },
@@ -235,7 +234,7 @@ describe(FactoryT.name, () => {
         });
     });
 
-    describe('function ' + makeSequenseFromEnum.name + '(...)', () => {
+    describe('function ' + makeSequenceFromEnum.name + '(...)', () => {
         it('returns "make" function which generates values from passed enum', () => {
             interface Data {
                 type: DataType;
@@ -246,7 +245,7 @@ describe(FactoryT.name, () => {
             }
 
             const dataFactory = new FactoryT<Data>({
-                type: makeSequenseFromEnum(DataType),
+                type: makeSequenceFromEnum(DataType),
             });
             expect(dataFactory.buildList({ count: 3 })).toEqual([
                 { type: DataType.ONE },

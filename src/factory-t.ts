@@ -7,7 +7,7 @@ export const INDEX_KEY = (context: {index: number}) => context.index;
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-export function makeSequense<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K> {
+export function makeSequence<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K> {
     const size = arrayOfValues.length;
     // NOTE: we use index - 1 due to factory starts index from 1 but array starts from 0
     return ({ index }) => arrayOfValues[(index - 1) % size];
@@ -17,10 +17,10 @@ export function makeSequense<T, K extends keyof T>(arrayOfValues: Array<T[K]>): 
  * @returns MakePropFn that generates enum values sequence
  * @param obj enum instance
  */
-export function makeSequenseFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K> {
+export function makeSequenceFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K> {
     const o = obj as {[key: string]: T[K]}; // HACK for type casting
     const arr = Object.keys(o).map(k => o[k] as T[K]);
-    return makeSequense(arr);
+    return makeSequence(arr);
 
 }
 
