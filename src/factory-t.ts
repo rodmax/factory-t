@@ -97,6 +97,10 @@ export class FactoryT<T extends object> {
             ...config as object,
         } as FactoryTConfig<T & D>);
     }
+
+    public resetCount(): void {
+        this.itemsCount = 1;
+    }
 }
 
 interface PossibleBuildListParams<T> {
