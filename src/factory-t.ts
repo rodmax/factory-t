@@ -72,7 +72,7 @@ export class FactoryT<T extends object> {
             }
             if (params.count && params.count < params.partials.length) {
                 throw new Error(
-                    `buildList() assertion error: "count" param should be greather then "partials.length"`
+                    `buildList() assertion error: "count" param should be greater then "partials.length"`
                 );
             }
         }
