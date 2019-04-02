@@ -12,6 +12,7 @@
         "quotemark": [true, "single"],
         "ordered-imports": false,
         "eofline": false,
+        "unified-signatures": false,
         "trailing-comma": [
             true,
             {
