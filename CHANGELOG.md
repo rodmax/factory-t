@@ -1,5 +1,5 @@
 <a name="0.1.1"></a>
-## 0.1.1 (2019-04-02)
+## [0.1.1](https://github.com/rodmax/factory-t/compare/bbf51ba...0.1.1) (2019-04-02)
 
 
 ### Bug Fixes
