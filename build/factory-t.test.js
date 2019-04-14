@@ -188,10 +188,10 @@ describe(factory_t_1.FactoryT.name, function () {
             expect(extendedFactory2.build()).toEqual({ name: 'base-name', type: 'BASE', newKey: 10 });
         });
     });
-    describe('function ' + factory_t_1.makeSequense.name + '(...)', function () {
+    describe('function ' + factory_t_1.makeSequence.name + '(...)', function () {
         it('returns "make" function which generates values from passed array', function () {
             var dataFactory = new factory_t_1.FactoryT({
-                name: factory_t_1.makeSequense(['one', 'two']),
+                name: factory_t_1.makeSequence(['one', 'two']),
             });
             expect(dataFactory.buildList({ count: 3 })).toEqual([
                 { name: 'one' },
@@ -200,7 +200,7 @@ describe(factory_t_1.FactoryT.name, function () {
             ]);
         });
     });
-    describe('function ' + factory_t_1.makeSequenseFromEnum.name + '(...)', function () {
+    describe('function ' + factory_t_1.makeSequenceFromEnum.name + '(...)', function () {
         it('returns "make" function which generates values from passed enum', function () {
             var DataType;
             (function (DataType) {
@@ -208,7 +208,7 @@ describe(factory_t_1.FactoryT.name, function () {
                 DataType["TWO"] = "TWO";
             })(DataType || (DataType = {}));
             var dataFactory = new factory_t_1.FactoryT({
-                type: factory_t_1.makeSequenseFromEnum(DataType),
+                type: factory_t_1.makeSequenceFromEnum(DataType),
             });
             expect(dataFactory.buildList({ count: 3 })).toEqual([
                 { type: DataType.ONE },

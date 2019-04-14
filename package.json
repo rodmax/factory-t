@@ -1,6 +1,6 @@
 {
   "name": "factory-t",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "build/factory-t.js",
   "scripts": {
@@ -13,8 +13,7 @@
     "pre-push": "run-p -ln test tslint",
     "pre-commit": "run-s -ln tslint",
     "commitlint": "commitlint",
-    "changelog:build": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-
+    "changelog:build": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "preversion": "run-s build pre-push",
     "version": "run-p -ln changelog:build && git add -A build CHANGELOG.md"
   },

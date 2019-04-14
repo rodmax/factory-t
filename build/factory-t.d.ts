@@ -8,12 +8,12 @@ export declare const INDEX_KEY: (context: {
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-export declare function makeSequense<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K>;
+export declare function makeSequence<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K>;
 /**
  * @returns MakePropFn that generates enum values sequence
  * @param obj enum instance
  */
-export declare function makeSequenseFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K>;
+export declare function makeSequenceFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K>;
 /**
  * Class that implements factory function specified by config object
  */
@@ -25,6 +25,7 @@ export declare class FactoryT<T extends object> {
     build(partial?: Partial<T>): T;
     buildList(inParams: (Pick<PossibleBuildListParams<T>, 'count'> | Pick<PossibleBuildListParams<T>, 'partials'> | Pick<PossibleBuildListParams<T>, 'count' | 'partials'>) & Pick<PossibleBuildListParams<T>, 'partial'>): T[];
     extends<D>(config: FactoryTConfig<D>): FactoryT<T & D>;
+    resetCount(): void;
 }
 interface PossibleBuildListParams<T> {
     count: number;

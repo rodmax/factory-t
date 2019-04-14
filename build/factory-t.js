@@ -19,7 +19,7 @@ exports.INDEX_KEY = function (context) { return context.index; };
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-function makeSequense(arrayOfValues) {
+function makeSequence(arrayOfValues) {
     var size = arrayOfValues.length;
     // NOTE: we use index - 1 due to factory starts index from 1 but array starts from 0
     return function (_a) {
@@ -27,17 +27,17 @@ function makeSequense(arrayOfValues) {
         return arrayOfValues[(index - 1) % size];
     };
 }
-exports.makeSequense = makeSequense;
+exports.makeSequence = makeSequence;
 /**
  * @returns MakePropFn that generates enum values sequence
  * @param obj enum instance
  */
-function makeSequenseFromEnum(obj) {
+function makeSequenceFromEnum(obj) {
     var o = obj; // HACK for type casting
     var arr = Object.keys(o).map(function (k) { return o[k]; });
-    return makeSequense(arr);
+    return makeSequence(arr);
 }
-exports.makeSequenseFromEnum = makeSequenseFromEnum;
+exports.makeSequenceFromEnum = makeSequenceFromEnum;
 /**
  * Class that implements factory function specified by config object
  */
@@ -70,7 +70,7 @@ var FactoryT = /** @class */ (function () {
                 throw new Error("buildList() assertion error: \"partials\" array must be not empty");
             }
             if (params.count && params.count < params.partials.length) {
-                throw new Error("buildList() assertion error: \"count\" param should be greather then \"partials.length\"");
+                throw new Error("buildList() assertion error: \"count\" param should be greater then \"partials.length\"");
             }
         }
         var count = params.count || params.partials.length;
@@ -85,6 +85,9 @@ var FactoryT = /** @class */ (function () {
     };
     FactoryT.prototype.extends = function (config) {
         return new FactoryT(__assign({}, this.config, config));
+    };
+    FactoryT.prototype.resetCount = function () {
+        this.itemsCount = 1;
     };
     return FactoryT;
 }());
