@@ -4,21 +4,27 @@
 
 > pronounced like `ˈfakt(ə)rē tē`
 
-Library for building JavaScript/TypeScript objects.
+TypeScript library for building data objects
 Useful for unit tests and mocking data during development
 
 With strong typing in mind
 
 ## Goals
-- Provide factory for building JavaScript objects base on some config
-- Factory instance should **strongly depends** from target TypeScript interface, so if interface changed factory should not be built before syncing with interface change
-- All kind of API "sugar" appreciated but but with strong typings in mind
+- Provide factory for building data objects based on predefined config
+- Factory instance should **strongly depends** from target TypeScript interface, so if interface will changed factory should not be built until syncing with interface changes
+- All kind of API "sugar" appreciated but with typings in mind
 
+## Install
+
+```bash
+npm install factory-t
+```
 
 ## Usage
 
+
 ```ts
-import { FactoryT, INDEX_KEY, makeSequenceFromEnum } from './factory-t';
+import { FactoryT, INDEX_KEY, makeSequenceFromEnum } from 'factory-t';
 
 interface User {
     id: number;
@@ -76,6 +82,7 @@ userFactory.buildList({
 ```
 
 See [API documentation](./src/factory-t.examples.test.ts.md)
+or [unit test](./src/factory-t.test.ts) for details
 
 ## Status
 I use this library in all current projects (mostly for unit tests)
