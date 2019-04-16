@@ -1,10 +1,16 @@
 {
   "name": "factory-t",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "TypeScript library for building data objects. With strong typings in mind",
-  "keywords": ["TypeScript", "factory", "unit-test"],
+  "keywords": [
+    "TypeScript",
+    "factory",
+    "unit-test"
+  ],
   "homepage": "https://github.com/rodmax/factory-t",
-  "bugs": {"url": "https://github.com/rodmax/factory-t/issues"},
+  "bugs": {
+    "url": "https://github.com/rodmax/factory-t/issues"
+  },
   "main": "build/factory-t.js",
   "scripts": {
     "test": "jest",
