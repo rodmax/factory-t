@@ -1,7 +1,10 @@
 {
   "name": "factory-t",
   "version": "0.1.2",
-  "description": "",
+  "description": "TypeScript library for building data objects. With strong typings in mind",
+  "keywords": ["TypeScript", "factory", "unit-test"],
+  "homepage": "https://github.com/rodmax/factory-t",
+  "bugs": {"url": "https://github.com/rodmax/factory-t/issues"},
   "main": "build/factory-t.js",
   "scripts": {
     "test": "jest",
@@ -24,7 +27,8 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "author": "Maxim Rodionov",
+  "author": "Maxim Rodionov <rodionov.m.m@gmail.com>",
+  "repository": "github:rodmax/factory-t",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "7.5.2",
