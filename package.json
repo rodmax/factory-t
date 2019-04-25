@@ -1,6 +1,6 @@
 {
   "name": "factory-t",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "TypeScript library for building data objects. With strong typings in mind",
   "keywords": [
     "TypeScript",

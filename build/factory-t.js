@@ -108,8 +108,8 @@ function normalizeConfig(config) {
         var configItem = config[key];
         var make;
         var deps;
-        if (isObject(configItem)) {
-            deps = (configItem.deps || []).slice();
+        if (isItValueGetterConfig(configItem)) {
+            deps = configItem.deps ? configItem.deps.slice() : [];
             make = configItem.make ||
                 (function () { return configItem.value; });
         }
@@ -126,13 +126,25 @@ function normalizeConfig(config) {
         return normalized;
     }, {});
 }
+function isItValueGetterConfig(conf) {
+    if (!isObject(conf)) {
+        return false;
+    }
+    if (typeof conf.make === 'function') {
+        return true;
+    }
+    if (conf.hasOwnProperty('value')) {
+        return true;
+    }
+    return false;
+}
 // NOTE it is weak attempt to detect object dut should work for normal usage of library
 function isObject(mayBeObj) {
     return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
 }
 // Kahn's algorithm (1962) https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 // used for topological sorting or "Dependency resolution"
-// function returns array of keys each of them independs from next elements
+// function returns array of keys each of them independent from next elements
 // example:
 // getKeysSortedByDeps({a: deps: ['c'], b: deps: ['a'], c: deps: []}) -> ['c', 'a', 'b']
 function getKeysSortedByDeps(conf) {

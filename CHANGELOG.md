@@ -1,3 +1,13 @@
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/rodmax/factory-t/compare/0.1.3...0.1.4) (2019-04-25)
+
+
+### Bug Fixes
+
+* allow to provide nested object/array directly ([a2779b2](https://github.com/rodmax/factory-t/commit/a2779b2)), closes [#10](https://github.com/rodmax/factory-t/issues/10)
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/rodmax/factory-t/compare/0.1.2...0.1.3) (2019-04-16)
 

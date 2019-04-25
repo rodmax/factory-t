@@ -33,14 +33,17 @@ interface PossibleBuildListParams<T> {
     partial?: Partial<T>;
 }
 declare type FactoryTConfig<T> = {
-    [K in keyof T]: ValueGetter<T, K> | {
-        deps?: Array<keyof T>;
-        value: T[K];
-    } | {
-        deps?: Array<keyof T>;
-        make?: MakePropFn<T, K>;
-    };
+    [K in keyof T]: ValueGetterConfig<T, K>;
 };
+declare type ValueGetterConfig<T, K extends keyof T> = ValueGetter<T, K> | ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K>;
+interface ValueGetterConfigWithValue<T, K extends keyof T> {
+    deps?: Array<keyof T>;
+    value: T[K];
+}
+interface ValueGetterConfigWithMake<T, K extends keyof T> {
+    deps?: Array<keyof T>;
+    make: MakePropFn<T, K>;
+}
 declare type MakePropFn<T, K extends keyof T> = (context: {
     partial: Readonly<Partial<T>>;
     index: number;
