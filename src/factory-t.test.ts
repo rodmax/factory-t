@@ -73,8 +73,24 @@ describe(FactoryT.name, () => {
 
         });
 
+        test('works with nested objects/arrays passed directly', () => {
+            const factory = new FactoryT<{
+                nestedObj: {child: string};
+                nestedArray: number[];
+            }>({
+                nestedObj: { child: 'nested.child' },
+                nestedArray: [1, 2],
+            });
+            expect(factory.build()).toEqual({
+                nestedObj: {
+                    child: 'nested.child',
+                },
+                nestedArray: [1, 2],
 
-        test('works with nested objects using { value: nestedObj } annotation', () => {
+            });
+        });
+
+        test('works with nested objects using { value: nestedObj } config', () => {
             const factory = new FactoryT<{nested: {child: string}}>({
                 nested: {
                     value: { child: 'nested.child' },
@@ -87,7 +103,7 @@ describe(FactoryT.name, () => {
             });
         });
 
-        test('(example) use FactoryT for nested object', () => {
+        test('(example) use another FactoryT for nested object', () => {
             interface DataWithNestedObj {
                 id: string;
                 nested: {

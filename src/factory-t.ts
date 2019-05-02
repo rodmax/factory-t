@@ -132,12 +132,12 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
 
         const configItem = config[key];
         let make: MakePropFn<T, K>;
-        let deps: K[];
+        let deps: Array<keyof T>;
 
-        if (isObject(configItem)) {
-            deps = [...((configItem as {deps: K[]}).deps || [])];
-            make = (configItem as {make: MakePropFn<T, K>}).make ||
-                (() => (configItem as {value: T[K]}).value);
+        if (isItValueGetterConfig<T, K>(configItem)) {
+            deps = configItem.deps ? [...configItem.deps] : [];
+            make = (configItem as ValueGetterConfigWithMake<T, K>).make ||
+                (() => (configItem as ValueGetterConfigWithValue<T, K>).value);
         } else {
             deps = [];
             make = typeof configItem === 'function' ?
@@ -153,15 +153,31 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
     }, {} as FactoryTConfigNormalized<T>);
 }
 
+function isItValueGetterConfig<T, K extends keyof T>(
+    conf: ValueGetterConfig<T, K>
+): conf is ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K> {
+
+    if (!isObject(conf)) {
+        return false;
+    }
+    if (typeof (conf as ValueGetterConfigWithMake<T, K>).make === 'function') {
+        return true;
+    }
+    if (conf.hasOwnProperty('value')) {
+        return true;
+    }
+    return false;
+}
+
 // NOTE it is weak attempt to detect object dut should work for normal usage of library
-function isObject<T>(mayBeObj: null | object | T): boolean {
+function isObject<T>(mayBeObj: null | object | T): mayBeObj is Record<string, unknown> {
     return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
 }
 
 
 // Kahn's algorithm (1962) https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 // used for topological sorting or "Dependency resolution"
-// function returns array of keys each of them independs from next elements
+// function returns array of keys each of them independent from next elements
 // example:
 // getKeysSortedByDeps({a: deps: ['c'], b: deps: ['a'], c: deps: []}) -> ['c', 'a', 'b']
 function getKeysSortedByDeps<T>(conf: {[key in keyof T]: {deps: Array<keyof T>}}): Array<keyof T> {
@@ -195,17 +211,21 @@ function getKeysSortedByDeps<T>(conf: {[key in keyof T]: {deps: Array<keyof T>}}
 }
 
 type FactoryTConfig<T> = {
-    [K in keyof T]:
-    ValueGetter<T, K> |
-    {
-        deps?: Array<keyof T>;
-        value: T[K];
-    } |
-    {
-        deps?: Array<keyof T>;
-        make?: MakePropFn<T, K>;
-    };
+    [K in keyof T]: ValueGetterConfig<T, K>;
 };
+
+type ValueGetterConfig<T, K extends keyof T> =
+    ValueGetter<T, K> | ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K>;
+
+interface ValueGetterConfigWithValue<T, K extends keyof T> {
+    deps?: Array<keyof T>;
+    value: T[K];
+}
+
+interface ValueGetterConfigWithMake<T, K extends keyof T> {
+    deps?: Array<keyof T>;
+    make: MakePropFn<T, K>;
+}
 
 type FactoryTConfigNormalized<T> = {
     [K in keyof T]: {
@@ -222,4 +242,3 @@ interface PropMaker<T, K extends keyof T> {
     key: K;
     make: MakePropFn<T, K>;
 }
-

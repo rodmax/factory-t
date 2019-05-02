@@ -70,7 +70,19 @@ describe(factory_t_1.FactoryT.name, function () {
                 b: 'override b',
             });
         });
-        test('works with nested objects using { value: nestedObj } annotation', function () {
+        test('works with nested objects/arrays passed directly', function () {
+            var factory = new factory_t_1.FactoryT({
+                nestedObj: { child: 'nested.child' },
+                nestedArray: [1, 2],
+            });
+            expect(factory.build()).toEqual({
+                nestedObj: {
+                    child: 'nested.child',
+                },
+                nestedArray: [1, 2],
+            });
+        });
+        test('works with nested objects using { value: nestedObj } config', function () {
             var factory = new factory_t_1.FactoryT({
                 nested: {
                     value: { child: 'nested.child' },
@@ -82,7 +94,7 @@ describe(factory_t_1.FactoryT.name, function () {
                 },
             });
         });
-        test('(example) use FactoryT for nested object', function () {
+        test('(example) use another FactoryT for nested object', function () {
             var nestedFactory = new factory_t_1.FactoryT({
                 name: function (_a) {
                     var index = _a.index;
