@@ -8,7 +8,7 @@ export declare const INDEX_KEY: (context: {
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-export declare function makeSequence<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K>;
+export declare function makeSequence<T, K extends keyof T>(arrayOfValues: ReadonlyArray<T[K]>): MakePropFn<T, K>;
 /**
  * @returns MakePropFn that generates enum values sequence
  * @param obj enum instance

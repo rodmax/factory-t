@@ -1,3 +1,13 @@
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/rodmax/factory-t/compare/0.1.4...0.1.5) (2019-06-24)
+
+
+### Bug Fixes
+
+* allow to use readonly arrays with "makeSequence()" ([2bdccf1](https://github.com/rodmax/factory-t/commit/2bdccf1))
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/rodmax/factory-t/compare/0.1.3...0.1.4) (2019-04-25)
 
