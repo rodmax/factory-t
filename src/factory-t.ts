@@ -7,7 +7,7 @@ export const INDEX_KEY = (context: {index: number}) => context.index;
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-export function makeSequence<T, K extends keyof T>(arrayOfValues: Array<T[K]>): MakePropFn<T, K> {
+export function makeSequence<T, K extends keyof T>(arrayOfValues: ReadonlyArray<T[K]>): MakePropFn<T, K> {
     const size = arrayOfValues.length;
     // NOTE: we use index - 1 due to factory starts index from 1 but array starts from 0
     return ({ index }) => arrayOfValues[(index - 1) % size];
