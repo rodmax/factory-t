@@ -40,7 +40,7 @@
     "@commitlint/cli": "8.0.0",
     "@commitlint/config-conventional": "7.6.0",
     "@types/jest": "24.0.14",
-    "conventional-changelog-cli": "2.0.21",
+    "conventional-changelog-cli": "2.0.23",
     "cz-conventional-changelog": "2.1.0",
     "husky": "2.5.0",
     "jdi": "1.1.3",
