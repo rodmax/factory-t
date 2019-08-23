@@ -7,7 +7,7 @@ export const INDEX_KEY = (context: {index: number}) => context.index;
  * @returns MakePropFn that generates values sequence from arrayOfValues
  * @param arrayOfValues array of values
  */
-export function makeSequence<T, K extends keyof T>(arrayOfValues: ReadonlyArray<T[K]>): MakePropFn<T, K> {
+export function makeSequence<T, K extends keyof T, O>(arrayOfValues: ReadonlyArray<T[K]>): MakePropFn<T, K, O> {
     const size = arrayOfValues.length;
     // NOTE: we use index - 1 due to factory starts index from 1 but array starts from 0
     return ({ index }) => arrayOfValues[(index - 1) % size];
@@ -17,7 +17,7 @@ export function makeSequence<T, K extends keyof T>(arrayOfValues: ReadonlyArray<
  * @returns MakePropFn that generates enum values sequence
  * @param obj enum instance
  */
-export function makeSequenceFromEnum<T, K extends keyof T>(obj: object): MakePropFn<T, K> {
+export function makeSequenceFromEnum<T, K extends keyof T, O>(obj: object): MakePropFn<T, K, O> {
     const o = obj as {[key: string]: T[K]}; // HACK for type casting
     const arr = Object.keys(o).map(k => o[k] as T[K]);
     return makeSequence(arr);
@@ -28,16 +28,16 @@ export function makeSequenceFromEnum<T, K extends keyof T>(obj: object): MakePro
 /**
  * Class that implements factory function specified by config object
  */
-export class FactoryT<T extends object> {
+export class FactoryT<T extends object, O = unknown> {
 
-    private propMakers: Array<PropMaker<T, keyof T>>;
+    private propMakers: Array<PropMaker<T, keyof T, O>>;
     private itemsCount: number = 1;
 
-    constructor(private config: FactoryTConfig<T>) {
+    constructor(private config: FactoryTConfig<T, O>) {
         this.propMakers = createPropMakers(config);
     }
 
-    public build(partial: Partial<T> = {}): T {
+    public build(partial: Partial<T> = {}, options?: O): T {
 
         const builtObj = this.propMakers.reduce((obj, propMaker) => {
             const key = propMaker.key;
@@ -45,7 +45,7 @@ export class FactoryT<T extends object> {
             if (partial.hasOwnProperty(key)) {
                 obj[key] = (partial as T)[key];
             } else {
-                obj[key] = propMaker.make({ partial: obj, index: this.itemsCount });
+                obj[key] = propMaker.make({ partial: obj, index: this.itemsCount, options });
             }
             return obj;
         }, {} as T);
@@ -60,7 +60,8 @@ export class FactoryT<T extends object> {
             Pick<PossibleBuildListParams<T>, 'count'> |
             Pick<PossibleBuildListParams<T>, 'partials'> |
             Pick<PossibleBuildListParams<T>, 'count' | 'partials'>
-        ) & Pick<PossibleBuildListParams<T>, 'partial'>
+        ) & Pick<PossibleBuildListParams<T>, 'partial'>,
+        options?: O,
     ): T[] {
         const params = inParams as PossibleBuildListParams<T>;
 
@@ -84,18 +85,18 @@ export class FactoryT<T extends object> {
         const items: T[] = [];
 
         for (let i = 0; i < count; i++) {
-            const item = this.build(partials[i] || defaultPartial);
+            const item = this.build(partials[i] || defaultPartial, options);
             items.push(item);
         }
 
         return items;
     }
 
-    public extends<D>(config: FactoryTConfig<D>): FactoryT<T & D> {
+    public extends<D>(config: FactoryTConfig<D, O>): FactoryT<T & D, O> {
         return new FactoryT({
             ...this.config as object,
             ...config as object,
-        } as FactoryTConfig<T & D>);
+        } as FactoryTConfig<T & D, O>);
     }
 
     public resetCount(): void {
@@ -110,9 +111,9 @@ interface PossibleBuildListParams<T> {
 }
 
 
-function createPropMakers<T>(
-    inputConfig: FactoryTConfig<T>
-): Array<PropMaker<T, keyof T>> {
+function createPropMakers<T, O>(
+    inputConfig: FactoryTConfig<T, O>
+): Array<PropMaker<T, keyof T, O>> {
 
     const conf = normalizeConfig(inputConfig);
     const sortedByDeps = getKeysSortedByDeps<T>(conf);
@@ -126,22 +127,22 @@ function createPropMakers<T>(
     });
 }
 
-function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): FactoryTConfigNormalized<T> {
+function normalizeConfig<T, K extends keyof T, O>(config: FactoryTConfig<T, O>): FactoryTConfigNormalized<T, O> {
     const keys = Object.keys(config) as K[];
     return keys.reduce((normalized, key: K) => {
 
         const configItem = config[key];
-        let make: MakePropFn<T, K>;
+        let make: MakePropFn<T, K, O>;
         let deps: Array<keyof T>;
 
-        if (isItValueGetterConfig<T, K>(configItem)) {
+        if (isItValueGetterConfig<T, K, O>(configItem)) {
             deps = configItem.deps ? [...configItem.deps] : [];
-            make = (configItem as ValueGetterConfigWithMake<T, K>).make ||
+            make = (configItem as ValueGetterConfigWithMake<T, K, O>).make ||
                 (() => (configItem as ValueGetterConfigWithValue<T, K>).value);
         } else {
             deps = [];
             make = typeof configItem === 'function' ?
-                configItem as MakePropFn<T, K> :
+                configItem as MakePropFn<T, K, O> :
                 () => configItem as T[K];
         }
 
@@ -150,17 +151,17 @@ function normalizeConfig<T, K extends keyof T>(config: FactoryTConfig<T>): Facto
             make,
         };
         return normalized;
-    }, {} as FactoryTConfigNormalized<T>);
+    }, {} as FactoryTConfigNormalized<T, O>);
 }
 
-function isItValueGetterConfig<T, K extends keyof T>(
-    conf: ValueGetterConfig<T, K>
-): conf is ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K> {
+function isItValueGetterConfig<T, K extends keyof T, O>(
+    conf: ValueGetterConfig<T, K, O>
+): conf is ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K, O> {
 
     if (!isObject(conf)) {
         return false;
     }
-    if (typeof (conf as ValueGetterConfigWithMake<T, K>).make === 'function') {
+    if (typeof (conf as ValueGetterConfigWithMake<T, K, O>).make === 'function') {
         return true;
     }
     if (conf.hasOwnProperty('value')) {
@@ -210,35 +211,41 @@ function getKeysSortedByDeps<T>(conf: {[key in keyof T]: {deps: Array<keyof T>}}
     return sorted;
 }
 
-type FactoryTConfig<T> = {
-    [K in keyof T]: ValueGetterConfig<T, K>;
+type FactoryTConfig<T, O> = {
+    [K in keyof T]: ValueGetterConfig<T, K, O>;
 };
 
-type ValueGetterConfig<T, K extends keyof T> =
-    ValueGetter<T, K> | ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K>;
+type ValueGetterConfig<T, K extends keyof T, O> =
+    ValueGetter<T, K, O> | ValueGetterConfigWithValue<T, K> | ValueGetterConfigWithMake<T, K, O>;
 
 interface ValueGetterConfigWithValue<T, K extends keyof T> {
     deps?: Array<keyof T>;
     value: T[K];
 }
 
-interface ValueGetterConfigWithMake<T, K extends keyof T> {
+interface ValueGetterConfigWithMake<T, K extends keyof T, O> {
     deps?: Array<keyof T>;
-    make: MakePropFn<T, K>;
+    make: MakePropFn<T, K, O>;
 }
 
-type FactoryTConfigNormalized<T> = {
+type FactoryTConfigNormalized<T, O> = {
     [K in keyof T]: {
         deps: Array<keyof T>;
-        make: MakePropFn<T, K>;
+        make: MakePropFn<T, K, O>;
     };
 };
 
-type MakePropFn<T, K extends keyof T> = (context: {partial: Readonly<Partial<T>>, index: number}) => T[K];
+interface MakeFnContext<T, O = unknown> {
+    partial: Readonly<Partial<T>>;
+    index: number;
+    options?: O;
+}
 
-type ValueGetter<T, K extends keyof T> = MakePropFn<T, K> | T[K] | null;
+type MakePropFn<T, K extends keyof T, O> = (context: MakeFnContext<T, O>) => T[K];
 
-interface PropMaker<T, K extends keyof T> {
+type ValueGetter<T, K extends keyof T, O> = MakePropFn<T, K, O> | T[K] | null;
+
+interface PropMaker<T, K extends keyof T, O> {
     key: K;
-    make: MakePropFn<T, K>;
+    make: MakePropFn<T, K, O>;
 }

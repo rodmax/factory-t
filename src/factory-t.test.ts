@@ -271,4 +271,48 @@ describe(FactoryT.name, () => {
         });
     });
 
+    describe('use options to more flexible generate data', () => {
+        interface Data {
+            email: string;
+        }
+
+        interface Options {
+            variant: 'google' | 'yahoo';
+        }
+        let dataFactory: FactoryT<Data, Options>;
+
+        beforeEach(() => {
+            dataFactory = new FactoryT<Data, Options>({
+                email: ctx => {
+                    const mailVendor = ctx.options ? ctx.options.variant : 'unknown';
+                    return `e@${mailVendor}`;
+                },
+            });
+        });
+
+        it('build({...}, options) reflected to passed options', () => {
+
+            expect(
+                dataFactory.build({}, { variant: 'google' })
+            ).toEqual(
+                { email: 'e@google' }
+            );
+            expect(
+                dataFactory.build({ email: '123@custom' }, { variant: 'google' })
+            ).toEqual(
+                { email: '123@custom' }
+            );
+        });
+
+        it('buildList({...}, options) reflected to passed options', () => {
+
+            expect(
+                dataFactory.buildList({ partials: [{ email: 'custom' }, {}] }, { variant: 'google' })
+            ).toEqual([
+                { email: 'custom' },
+                { email: 'e@google' },
+            ]);
+        });
+    });
+
 });
