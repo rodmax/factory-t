@@ -47,7 +47,7 @@ var FactoryT = /** @class */ (function () {
         this.itemsCount = 1;
         this.propMakers = createPropMakers(config);
     }
-    FactoryT.prototype.build = function (partial) {
+    FactoryT.prototype.build = function (partial, options) {
         var _this = this;
         if (partial === void 0) { partial = {}; }
         var builtObj = this.propMakers.reduce(function (obj, propMaker) {
@@ -56,14 +56,14 @@ var FactoryT = /** @class */ (function () {
                 obj[key] = partial[key];
             }
             else {
-                obj[key] = propMaker.make({ partial: obj, index: _this.itemsCount });
+                obj[key] = propMaker.make({ partial: obj, index: _this.itemsCount, options: options });
             }
             return obj;
         }, {});
         this.itemsCount++;
         return builtObj;
     };
-    FactoryT.prototype.buildList = function (inParams) {
+    FactoryT.prototype.buildList = function (inParams, options) {
         var params = inParams;
         if (params.partials) {
             if (params.partials.length === 0) {
@@ -78,7 +78,7 @@ var FactoryT = /** @class */ (function () {
         var defaultPartial = params.partial || {};
         var items = [];
         for (var i = 0; i < count; i++) {
-            var item = this.build(partials[i] || defaultPartial);
+            var item = this.build(partials[i] || defaultPartial, options);
             items.push(item);
         }
         return items;

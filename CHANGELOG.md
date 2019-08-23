@@ -1,3 +1,13 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/rodmax/factory-t/compare/0.1.5...0.2.0) (2019-08-23)
+
+
+### Features
+
+* add custom "options" to build* methods ([f6f48ea](https://github.com/rodmax/factory-t/commit/f6f48ea))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/rodmax/factory-t/compare/0.1.4...0.1.5) (2019-06-24)
 

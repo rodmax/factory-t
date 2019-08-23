@@ -229,4 +229,25 @@ describe(factory_t_1.FactoryT.name, function () {
             ]);
         });
     });
+    describe('use options to more flexible generate data', function () {
+        var dataFactory;
+        beforeEach(function () {
+            dataFactory = new factory_t_1.FactoryT({
+                email: function (ctx) {
+                    var mailVendor = ctx.options ? ctx.options.variant : 'unknown';
+                    return "e@" + mailVendor;
+                },
+            });
+        });
+        it('build({...}, options) reflected to passed options', function () {
+            expect(dataFactory.build({}, { variant: 'google' })).toEqual({ email: 'e@google' });
+            expect(dataFactory.build({ email: '123@custom' }, { variant: 'google' })).toEqual({ email: '123@custom' });
+        });
+        it('buildList({...}, options) reflected to passed options', function () {
+            expect(dataFactory.buildList({ partials: [{ email: 'custom' }, {}] }, { variant: 'google' })).toEqual([
+                { email: 'custom' },
+                { email: 'e@google' },
+            ]);
+        });
+    });
 });
