@@ -170,9 +170,21 @@ function isItValueGetterConfig<T, K extends keyof T, O>(
     return false;
 }
 
-// NOTE it is weak attempt to detect object dut should work for normal usage of library
+// NOTE it is weak attempt to detect object but should work for normal usage of library
 function isObject<T>(mayBeObj: null | object | T): mayBeObj is Record<string, unknown> {
-    return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
+    if (typeof mayBeObj !== 'object') {
+        return false;
+    }
+
+    if (mayBeObj === null) {
+        return false;
+    }
+
+    if (mayBeObj instanceof Array) {
+        return false;
+    }
+
+    return true;
 }
 
 

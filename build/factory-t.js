@@ -10,6 +10,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  *  Set of  "MakePropFn" helpers
@@ -84,7 +91,7 @@ var FactoryT = /** @class */ (function () {
         return items;
     };
     FactoryT.prototype.extends = function (config) {
-        return new FactoryT(__assign({}, this.config, config));
+        return new FactoryT(__assign(__assign({}, this.config), config));
     };
     FactoryT.prototype.resetCount = function () {
         this.itemsCount = 1;
@@ -109,7 +116,7 @@ function normalizeConfig(config) {
         var make;
         var deps;
         if (isItValueGetterConfig(configItem)) {
-            deps = configItem.deps ? configItem.deps.slice() : [];
+            deps = configItem.deps ? __spreadArrays(configItem.deps) : [];
             make = configItem.make ||
                 (function () { return configItem.value; });
         }
@@ -138,9 +145,18 @@ function isItValueGetterConfig(conf) {
     }
     return false;
 }
-// NOTE it is weak attempt to detect object dut should work for normal usage of library
+// NOTE it is weak attempt to detect object but should work for normal usage of library
 function isObject(mayBeObj) {
-    return mayBeObj !== null && (typeof mayBeObj === 'object') && mayBeObj.constructor !== Array;
+    if (typeof mayBeObj !== 'object') {
+        return false;
+    }
+    if (mayBeObj === null) {
+        return false;
+    }
+    if (mayBeObj instanceof Array) {
+        return false;
+    }
+    return true;
 }
 // Kahn's algorithm (1962) https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 // used for topological sorting or "Dependency resolution"
