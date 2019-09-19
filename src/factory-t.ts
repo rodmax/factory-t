@@ -78,7 +78,7 @@ export class FactoryT<T extends object, O = unknown> {
             }
         }
 
-        const count = params.count || params.partials.length;
+        const count = isFinite(params.count) ? params.count : params.partials.length;
         const partials = params.partials || [];
         const defaultPartial = params.partial || {};
 

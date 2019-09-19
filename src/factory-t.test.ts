@@ -202,6 +202,13 @@ describe(FactoryT.name, () => {
                 ]);
             }
         );
+
+        test('creates empty array when "count=0"', () => {
+            const factory = new FactoryT<{id: number}>({
+                id: INDEX_KEY,
+            });
+            expect(factory.buildList({ count: 0 })).toEqual([]);
+        });
     });
 
     describe(FactoryT.prototype.extends.name + '(...)', () => {
