@@ -1,3 +1,13 @@
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/rodmax/factory-t/compare/0.2.0...0.2.1) (2019-09-19)
+
+
+### Bug Fixes
+
+* **buildlist:** allow "count" param to be 0 ([f14e9be](https://github.com/rodmax/factory-t/commit/f14e9be)), closes [#19](https://github.com/rodmax/factory-t/issues/19)
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/rodmax/factory-t/compare/0.1.5...0.2.0) (2019-08-23)
 

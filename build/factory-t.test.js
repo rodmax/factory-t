@@ -182,6 +182,12 @@ describe(factory_t_1.FactoryT.name, function () {
                 { id: 3 },
             ]);
         });
+        test('creates empty array when "count=0"', function () {
+            var factory = new factory_t_1.FactoryT({
+                id: factory_t_1.INDEX_KEY,
+            });
+            expect(factory.buildList({ count: 0 })).toEqual([]);
+        });
     });
     describe(factory_t_1.FactoryT.prototype.extends.name + '(...)', function () {
         test('creates new factory that extends base factory', function () {

@@ -80,7 +80,7 @@ var FactoryT = /** @class */ (function () {
                 throw new Error("buildList() assertion error: \"count\" param should be greater then \"partials.length\"");
             }
         }
-        var count = params.count || params.partials.length;
+        var count = isFinite(params.count) ? params.count : params.partials.length;
         var partials = params.partials || [];
         var defaultPartial = params.partial || {};
         var items = [];
