@@ -50,7 +50,7 @@
     "sane": "4.1.0",
     "ts-jest": "24.1.0",
     "tslint": "5.20.0",
-    "tslint-consistent-codestyle": "1.15.1",
+    "tslint-consistent-codestyle": "1.16.0",
     "tslint-eslint-rules": "5.4.0",
     "typescript": "3.6.3"
   },
