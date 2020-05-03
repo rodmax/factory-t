@@ -3,7 +3,7 @@
 // <!-- tocstop -->
 
 // This file describes some typical cases of usage `factory-t` library
-import { FactoryT, INDEX_KEY, makeSequence, makeSequenceFromEnum } from './factory-t';
+import { FactoryT, INDEX_FIELD_FACTORY } from './factory-t';
 
 describe('Examples generated from test', () => { // jdi-disable-line
     test('should pass', () => { // jdi-disable-line
@@ -66,12 +66,8 @@ interface Data {
 }
 
 const factory = new FactoryT<Data>({
-    obj: {
-        value: { nested: 'nested-value' },
-    },
-    array: {
-        value: ['one', 'two'],
-    },
+    obj: { nested: 'nested-value' },
+    array: ['one', 'two'],
 });
 expect(factory.build()).toEqual({
     obj: { nested: 'nested-value' },
@@ -82,23 +78,24 @@ expect(factory.build()).toEqual({
 
 // ### Built-in factory functions
 
-
-// #### `INDEX_KEY`
+// #### `INDEX_FIELD_FACTORY`
 (() => { // jdi-disable-line
 
 const factory = new FactoryT<{ id: number }>({
-    id: INDEX_KEY,
+    id: INDEX_FIELD_FACTORY,
 });
 expect(factory.buildList({ count: 3 })).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
 
 })(); // jdi-disable-line
 
-// #### `makeSequence(choices)`
+// #### .useSequence(key, seqArray) method
 (() => { // jdi-disable-line
 
-const factory = new FactoryT<{ role: 'ADMIN' | 'OPERATOR' | 'WATCHER'}>({
-    role: makeSequence(['ADMIN', 'OPERATOR']),
+type RoleId = 'ADMIN' | 'OPERATOR' | 'WATCHER';
+const factory = new FactoryT<{ role: RoleId}>({
+    role: 'ADMIN' as RoleId,
 });
+factory.useSequence('role', ['ADMIN', 'OPERATOR']);
 expect(factory.buildList({ count: 3 })).toEqual([
     { role: 'ADMIN' },
     { role: 'OPERATOR' },
@@ -106,27 +103,6 @@ expect(factory.buildList({ count: 3 })).toEqual([
 ]);
 
 })(); // jdi-disable-line
-
-// #### `makeSequenceFromEnum(EnumType)`
-(() => { // jdi-disable-line
-enum Role {
-    Admin = 'ADMIN',
-    Operator = 'OPERATOR',
-    Watcher = 'WATCHER',
-}
-
-const factory = new FactoryT<{ role: Role}>({
-    role: makeSequenceFromEnum(Role),
-});
-
-expect(factory.buildList({ count: 3 })).toEqual([
-    { role: 'ADMIN' },
-    { role: 'OPERATOR' },
-    { role: 'WATCHER' },
-]);
-
-})(); // jdi-disable-line
-
 
 // ### Custom factory functions
 
@@ -158,12 +134,10 @@ expect(factory.buildList({ count: 2 })).toEqual([{ index: 'index: 1' }, { index:
 (() => { // jdi-disable-line
 
 const factory = new FactoryT<{ one: string, two: string }>({
-    one: {
-        deps: ['two'],
-        make: ctx => `"two" prop value is "${ctx.partial.two}"`,
-    },
+    one: 'default',
     two: ctx => `${ctx.index}`,
 });
+factory.useFieldFactory('one', ctx => `"two" prop value is "${ctx.get('two')}"`);
 expect(factory.buildList({ count: 2 })).toEqual([
     { two: '1', one: '"two" prop value is "1"' },
     { two: '2', one: '"two" prop value is "2"' },
@@ -192,7 +166,7 @@ expect(factory.build({ name: 'override' })).toEqual({ name: 'override' });
 (() => { // jdi-disable-line
 
 const factory = new FactoryT<{ id: number, name: string }>({
-    id: INDEX_KEY,
+    id: INDEX_FIELD_FACTORY,
     name: 'from-factory',
 });
 

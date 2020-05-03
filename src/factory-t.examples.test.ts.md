@@ -8,9 +8,8 @@
     + [Primitive property type: string, number, boolean, ...](#primitive-property-type-string-number-boolean-)
     + [Nested object/array in property](#nested-objectarray-in-property)
   * [Built-in factory functions](#built-in-factory-functions)
-    + [`INDEX_KEY`](#index_key)
-    + [`makeSequence(choices)`](#makesequencechoices)
-    + [`makeSequenceFromEnum(EnumType)`](#makesequencefromenumenumtype)
+    + [`INDEX_FIELD_FACTORY`](#index_field_factory)
+    + [.useSequence(key, seqArray) method](#usesequencekey-seqarray-method)
   * [Custom factory functions](#custom-factory-functions)
     + [Simple factory function](#simple-factory-function)
     + [Use `ctx.index` of generating object](#use-ctxindex-of-generating-object)
@@ -27,7 +26,7 @@
 
 This file describes some typical cases of usage `factory-t` library
 ```ts
-import { FactoryT, INDEX_KEY, makeSequence, makeSequenceFromEnum } from './factory-t';
+import { FactoryT, INDEX_FIELD_FACTORY } from './factory-t';
 
 
 
@@ -91,12 +90,8 @@ interface Data {
 }
 
 const factory = new FactoryT<Data>({
-    obj: {
-        value: { nested: 'nested-value' },
-    },
-    array: {
-        value: ['one', 'two'],
-    },
+    obj: { nested: 'nested-value' },
+    array: ['one', 'two'],
 });
 expect(factory.build()).toEqual({
     obj: { nested: 'nested-value' },
@@ -107,49 +102,29 @@ expect(factory.build()).toEqual({
 ```
 ### Built-in factory functions
 
-
-#### `INDEX_KEY`
+#### `INDEX_FIELD_FACTORY`
 
 ```ts
 const factory = new FactoryT<{ id: number }>({
-    id: INDEX_KEY,
+    id: INDEX_FIELD_FACTORY,
 });
 expect(factory.buildList({ count: 3 })).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
 
 
 ```
-#### `makeSequence(choices)`
+#### .useSequence(key, seqArray) method
 
 ```ts
-const factory = new FactoryT<{ role: 'ADMIN' | 'OPERATOR' | 'WATCHER'}>({
-    role: makeSequence(['ADMIN', 'OPERATOR']),
+type RoleId = 'ADMIN' | 'OPERATOR' | 'WATCHER';
+const factory = new FactoryT<{ role: RoleId}>({
+    role: 'ADMIN' as RoleId,
 });
+factory.useSequence('role', ['ADMIN', 'OPERATOR']);
 expect(factory.buildList({ count: 3 })).toEqual([
     { role: 'ADMIN' },
     { role: 'OPERATOR' },
     { role: 'ADMIN' },
 ]);
-
-
-```
-#### `makeSequenceFromEnum(EnumType)`
-```ts
-enum Role {
-    Admin = 'ADMIN',
-    Operator = 'OPERATOR',
-    Watcher = 'WATCHER',
-}
-
-const factory = new FactoryT<{ role: Role}>({
-    role: makeSequenceFromEnum(Role),
-});
-
-expect(factory.buildList({ count: 3 })).toEqual([
-    { role: 'ADMIN' },
-    { role: 'OPERATOR' },
-    { role: 'WATCHER' },
-]);
-
 
 
 ```
@@ -183,12 +158,10 @@ expect(factory.buildList({ count: 2 })).toEqual([{ index: 'index: 1' }, { index:
 
 ```ts
 const factory = new FactoryT<{ one: string, two: string }>({
-    one: {
-        deps: ['two'],
-        make: ctx => `"two" prop value is "${ctx.partial.two}"`,
-    },
+    one: 'default',
     two: ctx => `${ctx.index}`,
 });
+factory.useFieldFactory('one', ctx => `"two" prop value is "${ctx.get('two')}"`);
 expect(factory.buildList({ count: 2 })).toEqual([
     { two: '1', one: '"two" prop value is "1"' },
     { two: '2', one: '"two" prop value is "2"' },
@@ -219,7 +192,7 @@ expect(factory.build({ name: 'override' })).toEqual({ name: 'override' });
 
 ```ts
 const factory = new FactoryT<{ id: number, name: string }>({
-    id: INDEX_KEY,
+    id: INDEX_FIELD_FACTORY,
     name: 'from-factory',
 });
 
@@ -272,5 +245,5 @@ expect(factory.buildList({
 
 ```
 ------------------------
-Generated _Tue Apr 02 2019 10:10:40 GMT+0300 (Moscow Standard Time)_ from [&#x24C8; factory-t.examples.test.ts](factory-t.examples.test.ts "View in source")
+Generated _Sun May 03 2020 23:45:31 GMT+0300 (Moscow Standard Time)_ from [&#x24C8; factory-t.examples.test.ts](factory-t.examples.test.ts "View in source")
 

@@ -1,4 +1,5 @@
-import { FactoryT, INDEX_KEY, makeSequence, makeSequenceFromEnum } from './factory-t';
+// import { FactoryT, INDEX_KEY, makeSequence, makeSequenceFromEnum } from './factory-t-old';
+import { FactoryT, nullableField, INDEX_FIELD_FACTORY } from './factory-t';
 
 describe(FactoryT.name, () => {
 
@@ -6,7 +7,7 @@ describe(FactoryT.name, () => {
 
         test('makes each new instance with incremented index', () => {
             const factory = new FactoryT<{strWithId: string, id: number}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
                 strWithId: ({ index }) => `id=${index}`,
             });
             expect(factory.build()).toEqual({
@@ -20,8 +21,8 @@ describe(FactoryT.name, () => {
         });
 
         test('recognize null as property value', () => {
-            const factory = new FactoryT<{id: number}>({
-                id: null,
+            const factory = new FactoryT<{id: number | null}>({
+                id: nullableField<number>(null),
             });
             expect(factory.build()).toEqual({
                 id: null,
@@ -43,16 +44,12 @@ describe(FactoryT.name, () => {
                 A: string;
                 B: string;
             }>({
-                C: {
-                    deps: ['A', 'B'],
-                    make: ({ partial }) => `C(${partial.A},${partial.B})`,
-                },
+                C: 'C:will be rewrite)',
                 A: 'A',
-                B: {
-                    deps: ['A'],
-                    make: ({ partial }) => `B(${partial.A})`,
-                },
+                B: 'B:will be rewrite)',
             });
+            factory.useFieldFactory('C', ctx => `C(${ctx.get('A')},${ctx.get('B')})`);
+            factory.useFieldFactory('B', ctx => `B(${ctx.get('A')})`);
 
             expect(factory.build()).toEqual({
                 A: 'A',
@@ -92,9 +89,7 @@ describe(FactoryT.name, () => {
 
         test('works with nested objects using { value: nestedObj } config', () => {
             const factory = new FactoryT<{nested: {child: string}}>({
-                nested: {
-                    value: { child: 'nested.child' },
-                },
+                nested: { child: 'nested.child' },
             });
             expect(factory.build()).toEqual({
                 nested: {
@@ -116,11 +111,13 @@ describe(FactoryT.name, () => {
 
             const factory = new FactoryT<DataWithNestedObj>({
                 id: ({ index }) => 'parent-' + index,
-                nested: {
-                    deps: ['id'],
-                    make: ({ partial }) => nestedFactory.build({ name: `nested-object-of-${partial.id}` }),
-                },
+                nested: nestedFactory.build(),
             });
+
+            factory.useFieldFactory('nested', ctx => nestedFactory.build({
+                name: `nested-object-of-${ctx.get('id')}`,
+            }));
+
 
             expect(factory.build()).toEqual({
                 id: 'parent-1',
@@ -135,7 +132,7 @@ describe(FactoryT.name, () => {
 
         test('creates array of instances of size provided by "count" input property', () => {
             const factory = new FactoryT<{id: number}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
             });
             expect(factory.buildList({ count: 3 })).toEqual([
                 { id: 1 },
@@ -146,7 +143,7 @@ describe(FactoryT.name, () => {
 
         test('creates array of instances using array of "partials"', () => {
             const factory = new FactoryT<{id: number, name: string}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
                 name: 'default-name',
             });
             expect(factory.buildList({ partials: [
@@ -163,7 +160,7 @@ describe(FactoryT.name, () => {
 
         test('throw error if "count" < "partials.length"', () => {
             const factory = new FactoryT<{id: number}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
             });
             expect(() => factory.buildList({
                 partials: [{ id: 3 }, { id: 2 }, { id: 1 }],
@@ -173,7 +170,7 @@ describe(FactoryT.name, () => {
 
         test('throw error if "partials.length" === 0', () => {
             const factory = new FactoryT<{id: number}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
             });
             expect(() => factory.buildList({
                 partials: [],
@@ -185,7 +182,7 @@ describe(FactoryT.name, () => {
             ' data from "partials" for first "partials.length" items',
             () => {
                 const factory = new FactoryT<{ id: number }>({
-                    id: INDEX_KEY,
+                    id: INDEX_FIELD_FACTORY,
                 });
 
                 expect(factory.buildList({
@@ -205,7 +202,7 @@ describe(FactoryT.name, () => {
 
         test('creates empty array when "count=0"', () => {
             const factory = new FactoryT<{id: number}>({
-                id: INDEX_KEY,
+                id: INDEX_FIELD_FACTORY,
             });
             expect(factory.buildList({ count: 0 })).toEqual([]);
         });
@@ -214,67 +211,34 @@ describe(FactoryT.name, () => {
     describe(FactoryT.prototype.extends.name + '(...)', () => {
 
         test('creates new factory that extends base factory', () => {
-            // extends the same type
-            interface Data {
-                name: string;
-                type: string;
-            }
-
-            const baseFactory = new FactoryT<Data>({
-                name: 'base-name',
-                type: 'BASE',
-            });
-
-            const extendedFactory = baseFactory.extends({
-                type: 'EXTENDED',
-            });
-
-            expect(extendedFactory.build()).toEqual({ name: 'base-name', type: 'EXTENDED' });
-
-
-            // merge new type to base type
-            const extendedFactory2 = baseFactory.extends({
-                newKey: 10,
-            });
-            expect(extendedFactory2.build()).toEqual({ name: 'base-name', type: 'BASE', newKey: 10 });
-        });
-    });
-
-    describe('function ' + makeSequence.name + '(...)', () => {
-        it('returns "make" function which generates values from passed array', () => {
-            interface Data {
-                name: string;
-            }
-
-            const dataFactory = new FactoryT<Data>({
-                name: makeSequence(['one', 'two']),
-            });
-            expect(dataFactory.buildList({ count: 3 })).toEqual([
-                { name: 'one' },
-                { name: 'two' },
-                { name: 'one' },
-            ]);
-        });
-    });
-
-    describe('function ' + makeSequenceFromEnum.name + '(...)', () => {
-        it('returns "make" function which generates values from passed enum', () => {
-            interface Data {
-                type: DataType;
-            }
             enum DataType {
-                ONE = 'ONE',
-                TWO = 'TWO',
+                One,
+                Two,
             }
-
-            const dataFactory = new FactoryT<Data>({
-                type: makeSequenceFromEnum(DataType),
+            interface Data {
+                firstName: string;
+                enum: DataType;
+                union: 'one' | 'two';
+                lastName: string;
+                mayBeNull: number | null;
+            }
+            const partialFactory = new FactoryT({
+                firstName: ctx => `hello-${ctx.index}`,
+                enum: DataType.One,
+                union: ctx => ctx.index % 2 ? 'one' : 'two',
             });
-            expect(dataFactory.buildList({ count: 3 })).toEqual([
-                { type: DataType.ONE },
-                { type: DataType.TWO },
-                { type: DataType.ONE },
-            ]);
+
+            const dataFactory: FactoryT<Data> = partialFactory.extends({
+                lastName: 'as string',
+                mayBeNull: nullableField(12),
+            });
+            expect(dataFactory.build({ mayBeNull: null })).toEqual({
+                firstName: 'hello-1',
+                enum: DataType.One,
+                union: 'one',
+                lastName: 'as string',
+                mayBeNull: null,
+            });
         });
     });
 
