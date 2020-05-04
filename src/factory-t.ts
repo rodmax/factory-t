@@ -23,16 +23,9 @@ export class FactoryT<D extends object, O = unknown> {
         return newFactory.useBuilder((this.builder as unknown) as Partial<DtoBuilder<D & ED, O>>);
     }
 
-    public useBuilder(builder: Partial<DtoBuilder<D, O>>): this {
-        this.builder = {
-            ...this.builder,
-            ...builder,
-        };
-        return this;
-    }
-
     public build(partial: Partial<D> = {}, options?: O): D {
         const builtKeys: Array<keyof D> = [];
+        const keysStack: Array<keyof D> = [];
         const obj = {} as D;
 
         const getField = <K extends keyof D>(k: K) => {
@@ -48,7 +41,15 @@ export class FactoryT<D extends object, O = unknown> {
                 get: getField,
                 options,
             };
+            if (keysStack.includes(k)) {
+                keysStack.push(k);
+                throw new Error(
+                    `circular dependency cause between fields: ${keysStack.join('->')}`,
+                );
+            }
+            keysStack.push(k);
             obj[k] = this.builder[k](ctx);
+            keysStack.pop();
         };
 
         for (const k of this.dataKeys()) {
@@ -104,6 +105,14 @@ export class FactoryT<D extends object, O = unknown> {
 
     public resetCount(): void {
         this.itemsCount = 1;
+    }
+
+    private useBuilder(builder: Partial<DtoBuilder<D, O>>): this {
+        this.builder = {
+            ...this.builder,
+            ...builder,
+        };
+        return this;
     }
 
     private initialBuilder(dataShape: DataShape<D, O>): DtoBuilder<D, O> {
