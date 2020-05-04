@@ -11,9 +11,10 @@ Useful for unit tests and mocking data during development
 With strong typing in mind
 
 ## Goals
-- Provide factory for building data objects based on predefined config
-- Factory instance should **strongly depends** from target TypeScript interface, so if interface will changed factory should not be built until syncing with interface changes
-- All kind of API "sugar" appreciated but with typings in mind
+
+-   Provide factory for building data objects based on predefined config
+-   Factory instance should **strongly depends** from target TypeScript interface, so if interface will changed factory should not be built until syncing with interface changes
+-   All kind of API "sugar" appreciated but with typings in mind
 
 ## Install
 
@@ -22,7 +23,6 @@ npm install factory-t
 ```
 
 ## Usage
-
 
 ```ts
 import { FactoryT, INDEX_KEY, makeSequenceFromEnum } from 'factory-t';
@@ -86,11 +86,11 @@ See [API documentation](./src/factory-t.examples.test.ts.md)
 or [unit test](./src/factory-t.test.ts) for details
 
 ## Status
+
 I use this library in all current projects (mostly for unit tests)
 
 In my opinion it has simple implementation
 so if you like its API, you can try use it too
-
 
 ## Similar projects
 
@@ -100,7 +100,6 @@ if you write on JavaScript, it should solve all your needs.
 
 The main drawback is typings. This library has `@types/rosie` but it uses "builder" pattern which not allows to strong type checking between factory and target interface
 
-
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -109,7 +108,6 @@ Please make sure to update tests as appropriate.
 
 For more details see [development guide](DEVELOPMENT.md)
 
-
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
 
+[MIT](https://choosealicense.com/licenses/mit/)

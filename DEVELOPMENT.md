@@ -1,6 +1,7 @@
 # Development
 
 ## Test
+
 To decide what to test keep in mind [Use Case Coverage](https://kentcdodds.com/blog/how-to-know-what-to-test)
 
 ```bash
@@ -11,6 +12,7 @@ npm run test:watch
 ```
 
 ## Workflow
+
 We use [commitizen](https://github.com/commitizen/cz-cli) tool and approach to write commit messages
 
 so if you decide to add some more code to this project,

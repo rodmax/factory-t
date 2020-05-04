@@ -15,12 +15,11 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "tslint": "tslint -t stylish './src/**/*.ts'",
     "build": "rm -rf ./build && tsc --build src",
     "examples:build": "jdi ./src/factory-t.examples.test.ts && markdown-toc -i ./src/factory-t.examples.test.ts.md",
     "examples:build:watch": "sane 'npm run examples:build' ./src --glob='*examples.test.ts'",
-    "pre-push": "run-p -ln test tslint",
-    "pre-commit": "run-s -ln tslint",
+    "pre-push": "run-p -ln test",
+    "pre-commit": "pretty-quick --staged",
     "commitlint": "commitlint",
     "changelog:build": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "version": "./tools/bump-version.sh",
@@ -47,11 +46,10 @@
     "jest": "24.9.0",
     "markdown-toc": "1.2.0",
     "npm-run-all": "4.1.5",
+    "prettier": "2.0.5",
+    "pretty-quick": "2.0.1",
     "sane": "4.1.0",
     "ts-jest": "24.2.0",
-    "tslint": "5.20.0",
-    "tslint-consistent-codestyle": "1.16.0",
-    "tslint-eslint-rules": "5.4.0",
     "typescript": "3.8.3"
   },
   "config": {

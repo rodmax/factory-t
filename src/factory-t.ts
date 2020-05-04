@@ -1,5 +1,4 @@
 export class FactoryT<D extends object, O = unknown> {
-
     private builder: DtoBuilder<D, O>;
     private itemsCount: number = 1;
 
@@ -20,8 +19,8 @@ export class FactoryT<D extends object, O = unknown> {
     }
 
     public extends<ED extends object>(dataShape: ED): FactoryT<D & ED, O> {
-        const newFactory = new FactoryT(dataShape) as unknown as FactoryT<D & ED, O>;
-        return newFactory.useBuilder(this.builder as unknown as Partial<DtoBuilder<D & ED, O>>);
+        const newFactory = (new FactoryT(dataShape) as unknown) as FactoryT<D & ED, O>;
+        return newFactory.useBuilder((this.builder as unknown) as Partial<DtoBuilder<D & ED, O>>);
     }
 
     public useBuilder(builder: Partial<DtoBuilder<D, O>>): this {
@@ -33,7 +32,6 @@ export class FactoryT<D extends object, O = unknown> {
     }
 
     public build(partial: Partial<D> = {}, options?: O): D {
-
         const builtKeys: Array<keyof D> = [];
         const obj = {} as D;
 
@@ -70,23 +68,22 @@ export class FactoryT<D extends object, O = unknown> {
 
     public buildList(
         inParams: (
-            Pick<PossibleBuildListParams<D>, 'count'> |
-            Pick<PossibleBuildListParams<D>, 'partials'> |
-            Pick<PossibleBuildListParams<D>, 'count' | 'partials'>
-        ) & Pick<PossibleBuildListParams<D>, 'partial'>,
+            | Pick<PossibleBuildListParams<D>, 'count'>
+            | Pick<PossibleBuildListParams<D>, 'partials'>
+            | Pick<PossibleBuildListParams<D>, 'count' | 'partials'>
+        ) &
+            Pick<PossibleBuildListParams<D>, 'partial'>,
         options?: O,
     ): D[] {
         const params = inParams as PossibleBuildListParams<D>;
 
         if (params.partials) {
             if (params.partials.length === 0) {
-                throw new Error(
-                    `buildList() assertion error: "partials" array must be not empty`
-                );
+                throw new Error(`buildList() assertion error: "partials" array must be not empty`);
             }
             if (params.count && params.count < params.partials.length) {
                 throw new Error(
-                    `buildList() assertion error: "count" param should be greater then "partials.length"`
+                    `buildList() assertion error: "count" param should be greater then "partials.length"`,
                 );
             }
         }
@@ -111,11 +108,14 @@ export class FactoryT<D extends object, O = unknown> {
 
     private initialBuilder(dataShape: DataShape<D, O>): DtoBuilder<D, O> {
         const config = {} as DtoBuilder<D, O>;
-        (Object.keys(dataShape) as unknown as Array<keyof D>).forEach(<K extends keyof D>(key: K) => {
-
-            const valueOrFactory = dataShape[key];
-            config[key] = isFactory<D[K], O>(valueOrFactory) ? valueOrFactory : () => valueOrFactory as D[K];
-        });
+        ((Object.keys(dataShape) as unknown) as Array<keyof D>).forEach(
+            <K extends keyof D>(key: K) => {
+                const valueOrFactory = dataShape[key];
+                config[key] = isFactory<D[K], O>(valueOrFactory)
+                    ? valueOrFactory
+                    : () => valueOrFactory as D[K];
+            },
+        );
         return config;
     }
 
@@ -124,7 +124,7 @@ export class FactoryT<D extends object, O = unknown> {
     }
 }
 
-export const INDEX_FIELD_FACTORY: FieldSimpleFactory<number> = ctx => ctx.index;
+export const INDEX_FIELD_FACTORY: FieldSimpleFactory<number> = (ctx) => ctx.index;
 
 export function nullableField<T>(initialValue: T | null): T | null {
     return initialValue;
@@ -145,13 +145,13 @@ interface FiledSimpleFactoryContext<O> {
 
 type FieldSimpleFactory<T, O = unknown> = (ctx: FiledSimpleFactoryContext<O>) => T;
 
-
 interface FieldFactoryContext<D extends object, O = unknown> extends FiledSimpleFactoryContext<O> {
     get<K extends keyof D>(k: K): D[K];
 }
 
-type FieldFactory<D extends object, K extends keyof D, O = unknown> = (ctx: FieldFactoryContext<D, O>) => D[K];
-
+type FieldFactory<D extends object, K extends keyof D, O = unknown> = (
+    ctx: FieldFactoryContext<D, O>,
+) => D[K];
 
 type DtoBuilder<D extends object, O = unknown> = {
     [K in keyof D]: FieldFactory<D, K, O>;

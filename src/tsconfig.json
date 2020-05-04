@@ -10,17 +10,11 @@
         "target": "es5",
         "jsx": "react",
         "module": "commonjs",
-        "lib": [
-            "es2015",
-            "es2017",
-            "dom"
-        ],
+        "lib": ["es2015", "es2017", "dom"],
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
         "resolveJsonModule": true
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "exclude": ["node_modules"]
 }
