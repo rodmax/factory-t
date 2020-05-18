@@ -11,18 +11,25 @@
   "bugs": {
     "url": "https://github.com/rodmax/factory-t/issues"
   },
-  "main": "build/factory-t.js",
+  "main": "build/index.js",
+  "files": [
+    "build/",
+    "README.md",
+    "CHANGELOG",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "rm -rf ./build && tsc --build src",
     "commitlint": "commitlint",
     "changelog:build": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "version": "./tools/bump-version.sh",
+    "version": "./tools/version.sh",
+    "preversion": "./tools/pre-version.sh",
+    "integration-test": "./tools/integration-test.sh",
     "eslint": "eslint -f codeframe --ext=js,ts ./",
     "pre-push": "run-p -ln test eslint",
-    "pre-commit": "pretty-quick --staged && npm run eslint",
-    "push-and-publish": "git push && npm publish"
+    "pre-commit": "pretty-quick --staged && npm run eslint"
   },
   "husky": {
     "hooks": {

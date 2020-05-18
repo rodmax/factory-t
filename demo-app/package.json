@@ -1,0 +1,16 @@
+{
+  "name": "demo-app",
+  "version": "1.0.0",
+  "description": "App to test integration with factory-t",
+  "main": "index.js",
+  "dependencies": {
+    "typescript": "3.9.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc --build ./",
+    "test": "npm run build && node ./build/index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

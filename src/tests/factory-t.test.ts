@@ -1,42 +1,43 @@
-import { FactoryT, nullableField, INDEX_FIELD_FACTORY } from './factory-t';
+import { factoryTBuilder, factoryT, nullableField, indexField, FactoryT } from '../index';
 
 describe(`${FactoryT.name}`, () => {
-    describe('build(...)', () => {
+    describe('item()', () => {
         it('makes each new instance with incremented index', () => {
-            const factory = new FactoryT<{ strWithId: string; id: number }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ strWithId: string; id: number }>({
+                id: indexField(),
                 strWithId: ({ index }) => `id=${index}`,
             });
-            expect(factory.build()).toStrictEqual({
+
+            expect(factory.item()).toStrictEqual({
                 id: 1,
                 strWithId: 'id=1',
             });
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 id: 2,
                 strWithId: 'id=2',
             });
         });
 
         it('recognize null as property value', () => {
-            const factory = new FactoryT<{ id: number | null }>({
+            const factory = factoryT<{ id: number | null }>({
                 id: nullableField<number>(null),
             });
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 id: null,
             });
         });
 
         it('recognize empty array as property value', () => {
-            const factory = new FactoryT<{ ids: number[] }>({
+            const factory = factoryT<{ ids: number[] }>({
                 ids: [],
             });
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 ids: [],
             });
         });
 
         it('resolve props dependencies', () => {
-            const factory = new FactoryT<{
+            const factory = factoryTBuilder<{
                 C: string;
                 A: string;
                 B: string;
@@ -44,11 +45,12 @@ describe(`${FactoryT.name}`, () => {
                 C: 'C:will be rewrite)',
                 A: 'A',
                 B: 'B:will be rewrite)',
-            });
-            factory.useFieldFactory('C', (ctx) => `C(${ctx.get('A')},${ctx.get('B')})`);
-            factory.useFieldFactory('B', (ctx) => `B(${ctx.get('A')})`);
+            })
+                .useFieldFactory('C', (ctx) => `C(${ctx.get('A')},${ctx.get('B')})`)
+                .useFieldFactory('B', (ctx) => `B(${ctx.get('A')})`)
+                .factory();
 
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 A: 'A',
                 B: 'B(A)',
                 C: 'C(A,B(A))',
@@ -56,25 +58,25 @@ describe(`${FactoryT.name}`, () => {
         });
 
         it('override prop values from passed object', () => {
-            const factory = new FactoryT<{ a: string; b: string }>({
+            const factory = factoryT<{ a: string; b: string }>({
                 a: 'a',
                 b: 'b',
             });
-            expect(factory.build({ b: 'override b' })).toStrictEqual({
+            expect(factory.item({ b: 'override b' })).toStrictEqual({
                 a: 'a',
                 b: 'override b',
             });
         });
 
         it('works with nested objects/arrays passed directly', () => {
-            const factory = new FactoryT<{
+            const factory = factoryT<{
                 nestedObj: { child: string };
                 nestedArray: number[];
             }>({
                 nestedObj: { child: 'nested.child' },
                 nestedArray: [1, 2],
             });
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 nestedObj: {
                     child: 'nested.child',
                 },
@@ -83,10 +85,10 @@ describe(`${FactoryT.name}`, () => {
         });
 
         it('works with nested objects using { value: nestedObj } config', () => {
-            const factory = new FactoryT<{ nested: { child: string } }>({
+            const factory = factoryT<{ nested: { child: string } }>({
                 nested: { child: 'nested.child' },
             });
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 nested: {
                     child: 'nested.child',
                 },
@@ -100,22 +102,22 @@ describe(`${FactoryT.name}`, () => {
                     name: string;
                 };
             }
-            const nestedFactory = new FactoryT<DataWithNestedObj['nested']>({
+            const nestedFactory = factoryT<DataWithNestedObj['nested']>({
                 name: ({ index }) => 'nested-' + index,
             });
 
-            const factory = new FactoryT<DataWithNestedObj>({
+            const factory = factoryTBuilder<DataWithNestedObj>({
                 id: ({ index }) => 'parent-' + index,
-                nested: nestedFactory.build(),
-            });
+                nested: nestedFactory.item(),
+            })
+                .useFieldFactory('nested', (ctx) =>
+                    nestedFactory.item({
+                        name: `nested-object-of-${ctx.get('id')}`,
+                    }),
+                )
+                .factory();
 
-            factory.useFieldFactory('nested', (ctx) =>
-                nestedFactory.build({
-                    name: `nested-object-of-${ctx.get('id')}`,
-                }),
-            );
-
-            expect(factory.build()).toStrictEqual({
+            expect(factory.item()).toStrictEqual({
                 id: 'parent-1',
                 nested: {
                     name: 'nested-object-of-parent-1',
@@ -124,36 +126,33 @@ describe(`${FactoryT.name}`, () => {
         });
 
         it('throw error with clear message when circular dependency between fields detected', () => {
-            const factory = new FactoryT({
+            const factory = factoryTBuilder({
                 a: 'a',
                 b: 'b',
-            });
-            factory.useFieldFactory('a', (ctx) => ctx.get('b'));
-            factory.useFieldFactory('b', (ctx) => ctx.get('a'));
+            })
+                .useFieldFactory('a', (ctx) => ctx.get('b'))
+                .useFieldFactory('b', (ctx) => ctx.get('a'))
+                .factory();
 
-            expect(() => factory.build()).toThrow('circular');
+            expect(() => factory.item()).toThrow('circular');
         });
     });
 
-    describe('buildList(...)', () => {
+    describe('list(...)', () => {
         it('creates array of instances of size provided by "count" input property', () => {
-            const factory = new FactoryT<{ id: number }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ id: number }>({
+                id: indexField(),
             });
-            expect(factory.buildList({ count: 3 })).toStrictEqual([
-                { id: 1 },
-                { id: 2 },
-                { id: 3 },
-            ]);
+            expect(factory.list({ count: 3 })).toStrictEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
         });
 
         it('creates array of instances using array of "partials"', () => {
-            const factory = new FactoryT<{ id: number; name: string }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ id: number; name: string }>({
+                id: indexField(),
                 name: 'default-name',
             });
             expect(
-                factory.buildList({ partials: [{ name: 'first' }, {}, { name: 'third' }] }),
+                factory.list({ partials: [{ name: 'first' }, {}, { name: 'third' }] }),
             ).toStrictEqual([
                 { id: 1, name: 'first' },
                 { id: 2, name: 'default-name' },
@@ -162,11 +161,11 @@ describe(`${FactoryT.name}`, () => {
         });
 
         it('throw error if "count" < "partials.length"', () => {
-            const factory = new FactoryT<{ id: number }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ id: number }>({
+                id: indexField(),
             });
             expect(() =>
-                factory.buildList({
+                factory.list({
                     partials: [{ id: 3 }, { id: 2 }, { id: 1 }],
                     count: 2,
                 }),
@@ -174,11 +173,11 @@ describe(`${FactoryT.name}`, () => {
         });
 
         it('throw error if "partials.length" === 0', () => {
-            const factory = new FactoryT<{ id: number }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ id: number }>({
+                id: indexField(),
             });
             expect(() =>
-                factory.buildList({
+                factory.list({
                     partials: [],
                 }),
             ).toThrow('assertion error');
@@ -188,12 +187,12 @@ describe(`${FactoryT.name}`, () => {
             'creates array of instances of size "count" using' +
                 ' data from "partials" for first "partials.length" items',
             () => {
-                const factory = new FactoryT<{ id: number }>({
-                    id: INDEX_FIELD_FACTORY,
+                const factory = factoryT<{ id: number }>({
+                    id: indexField(),
                 });
 
                 expect(
-                    factory.buildList({
+                    factory.list({
                         count: 3,
                         partials: [{ id: 100 }, { id: 200 }],
                     }),
@@ -202,14 +201,14 @@ describe(`${FactoryT.name}`, () => {
         );
 
         it('creates empty array when "count=0"', () => {
-            const factory = new FactoryT<{ id: number }>({
-                id: INDEX_FIELD_FACTORY,
+            const factory = factoryT<{ id: number }>({
+                id: indexField(),
             });
-            expect(factory.buildList({ count: 0 })).toStrictEqual([]);
+            expect(factory.list({ count: 0 })).toStrictEqual([]);
         });
     });
 
-    describe('extends(...)', () => {
+    describe('factoryBuilder.extends(...)', () => {
         it('creates new factory that extends base factory', () => {
             enum DataType {
                 One,
@@ -222,17 +221,19 @@ describe(`${FactoryT.name}`, () => {
                 lastName: string;
                 mayBeNull: number | null;
             }
-            const partialFactory = new FactoryT({
+            const partialFactoryBuilder = factoryTBuilder({
                 firstName: (ctx) => `hello-${ctx.index}`,
                 enum: DataType.One,
                 union: (ctx) => (ctx.index % 2 ? 'one' : 'two'),
             });
 
-            const dataFactory: FactoryT<Data> = partialFactory.extends({
-                lastName: 'as string',
-                mayBeNull: nullableField(12),
-            });
-            expect(dataFactory.build({ mayBeNull: null })).toStrictEqual({
+            const dataFactory: FactoryT<Data> = partialFactoryBuilder
+                .extends({
+                    lastName: 'as string',
+                    mayBeNull: nullableField(12),
+                })
+                .factory();
+            expect(dataFactory.item({ mayBeNull: null })).toStrictEqual({
                 firstName: 'hello-1',
                 enum: DataType.One,
                 union: 'one',
@@ -242,7 +243,7 @@ describe(`${FactoryT.name}`, () => {
         });
     });
 
-    describe('use options to more flexible generate data', () => {
+    describe('use options to more flexible data generate', () => {
         interface Data {
             email: string;
         }
@@ -252,7 +253,7 @@ describe(`${FactoryT.name}`, () => {
         }
 
         function factoryWithOptions(): FactoryT<Data, Options> {
-            return new FactoryT<Data, Options>({
+            return factoryT<Data, Options>({
                 email: (ctx) => {
                     const mailVendor = ctx.options ? ctx.options.variant : 'unknown';
                     return `e@${mailVendor}`;
@@ -260,25 +261,20 @@ describe(`${FactoryT.name}`, () => {
             });
         }
 
-        it('build({...}, options) reflected to passed options', () => {
+        it('item({...}, options) reflected to passed options', () => {
             const dataFactory = factoryWithOptions();
-            expect(dataFactory.build({}, { variant: 'google' })).toStrictEqual({
+            expect(dataFactory.item({}, { variant: 'google' })).toStrictEqual({
                 email: 'e@google',
             });
-            expect(dataFactory.build({ email: '123@custom' }, { variant: 'google' })).toStrictEqual(
-                {
-                    email: '123@custom',
-                },
-            );
+            expect(dataFactory.item({ email: '123@custom' }, { variant: 'google' })).toStrictEqual({
+                email: '123@custom',
+            });
         });
 
-        it('buildList({...}, options) reflected to passed options', () => {
+        it('list({...}, options) reflected to passed options', () => {
             const dataFactory = factoryWithOptions();
             expect(
-                dataFactory.buildList(
-                    { partials: [{ email: 'custom' }, {}] },
-                    { variant: 'google' },
-                ),
+                dataFactory.list({ partials: [{ email: 'custom' }, {}] }, { variant: 'google' }),
             ).toStrictEqual([{ email: 'custom' }, { email: 'e@google' }]);
         });
     });
