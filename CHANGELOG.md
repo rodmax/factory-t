@@ -1,3 +1,21 @@
+<a name="0.3.0-beta.0"></a>
+# [0.3.0-beta.0](https://github.com/rodmax/factory-t/compare/0.2.1...0.3.0-beta.0) (2020-05-18)
+
+
+### Features
+
+* **all:** public API of factory creation/configuration fully reworked ([9c19aa3](https://github.com/rodmax/factory-t/commit/9c19aa3)), closes [#34](https://github.com/rodmax/factory-t/issues/34)
+* rework lib so to split factory builder and using logic ([2eff03b](https://github.com/rodmax/factory-t/commit/2eff03b))
+
+
+### BREAKING CHANGES
+
+* Public API shape fully reworked. please see README and tests to usage details, in
+general migration should not be a difficult
+* **all:** You should refactor all creation code of your factroies
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/rodmax/factory-t/compare/0.2.0...0.2.1) (2019-09-19)
 
