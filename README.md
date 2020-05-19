@@ -26,7 +26,7 @@ npm install factory-t
 
 To start you need
 
--   Design you type
+-   Design your data type
 <!-- embedme ./src/tests/readme-snippets.test.ts#L5-L14-->
 
 ```ts
