@@ -1,5 +1,5 @@
 import { FieldSimpleFactory, FieldFactoryByKey, DataShape, FieldFactory } from './common';
-import { FactoryT } from './factory-t';
+import { FactoryT } from './factory';
 
 export class FactoryTBuilder<D extends object, O = unknown> {
     private fieldFactoryByKey: FieldFactoryByKey<D, O>;

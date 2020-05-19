@@ -24,7 +24,65 @@ npm install factory-t
 
 ## Usage
 
-Section WIP
+To start you need
+
+-   Design you type
+<!-- embedme ./src/tests/readme-snippets.test.ts#L5-L14-->
+
+```ts
+interface UserDto {
+    id: number;
+    email: string;
+    phone: string | null;
+    profile: {
+        avatarUrl: string;
+        language: 'EN' | 'RU';
+        statusString?: string;
+    };
+}
+```
+
+-   Import right tools
+<!-- embedme ./src/tests/readme-snippets.test.ts#L1-L1-->
+
+```ts
+import { factoryT, indexField, sequenceField, nullableField, optionalField } from 'factory-t';
+```
+
+-   create factory (or bunch of factories)
+<!-- embedme ./src/tests/readme-snippets.test.ts#L16-L27-->
+
+```ts
+const profileFactory = factoryT<UserDto['profile']>({
+    avatarUrl: 'my.site/avatar',
+    language: sequenceField(['EN', 'RU']),
+    statusString: optionalField('sleeping'),
+});
+
+const userFactory = factoryT<UserDto>({
+    id: indexField(),
+    email: (ctx) => `user-${ctx.index}@g.com`,
+    phone: nullableField('+127788'),
+    profile: (ctx) => profileFactory.item({ avatarUrl: `/avatars/${ctx.index}` }),
+});
+```
+
+-   and use it to build objects
+
+<!-- embedme ./src/tests/readme-snippets.test.ts#L29-L38-->
+
+```ts
+expect(userFactory.item({ phone: null })).toStrictEqual({
+    id: 1,
+    email: 'user-1@g.com',
+    phone: null, // override by passed partial to item(...)
+    profile: {
+        avatarUrl: '/avatars/1', // override by userFactory using its index
+        language: 'EN',
+        statusString: 'sleeping',
+    },
+});
+```
 
 See [unit test](./src/tests/factory-t.test.ts) for details
 

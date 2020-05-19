@@ -28,6 +28,8 @@
     "preversion": "./tools/pre-version.sh",
     "integration-test": "./tools/integration-test.sh",
     "eslint": "eslint -f codeframe --ext=js,ts ./",
+    "embedme": "embedme README.md",
+    "embedme:verify": "npm run embedme -- --verify",
     "pre-push": "run-p -ln test eslint",
     "pre-commit": "pretty-quick --staged && npm run eslint"
   },
@@ -49,6 +51,7 @@
     "@typescript-eslint/parser": "2.31.0",
     "conventional-changelog-cli": "2.0.34",
     "cz-conventional-changelog": "3.2.0",
+    "embedme": "1.21.0",
     "eslint": "6.8.0",
     "husky": "3.1.0",
     "jest": "24.9.0",

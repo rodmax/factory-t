@@ -1,8 +1,8 @@
 import { DataShape } from './common';
-import { FactoryTBuilder } from './factory-t-builder';
+import { FactoryTBuilder } from './factory-builder';
 
-export { FactoryT } from './factory-t';
-export { indexField, nullableField } from './fields';
+export { FactoryT } from './factory';
+export { indexField, nullableField, sequenceField, optionalField } from './fields';
 export { FactoryTBuilder };
 
 export const factoryTBuilder = <D extends object, O = unknown>(dataShape: DataShape<D, O>) => {

@@ -1,9 +1,12 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
+    moduleNameMapper: {
+        '^factory-t$': '<rootDir>/src/index',
+    },
     globals: {
         'ts-jest': {
-            tsConfig: './src/tsconfig.json',
+            tsConfig: './src/tests/tsconfig.json',
         },
     },
 };

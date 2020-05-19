@@ -1,4 +1,4 @@
-import { factoryTBuilder, factoryT, nullableField, indexField, FactoryT } from '../index';
+import { factoryTBuilder, factoryT, nullableField, indexField, FactoryT } from 'factory-t';
 
 describe(`${FactoryT.name}`, () => {
     describe('item()', () => {
