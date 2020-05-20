@@ -1,6 +1,6 @@
 # factory-t
 
-[![Build Status](https://travis-ci.com/rodmax/factory-t.svg?branch=master)](https://travis-ci.com/rodmax/factory-t)
+![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
 [![Greenkeeper badge](https://badges.greenkeeper.io/rodmax/factory-t.svg)](https://greenkeeper.io/)
 
 > pronounced like `ˈfakt(ə)rē tē`

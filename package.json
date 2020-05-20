@@ -30,7 +30,8 @@
     "eslint": "eslint -f codeframe --ext=js,ts ./",
     "embedme": "embedme README.md",
     "embedme:verify": "npm run embedme -- --verify",
-    "pre-push": "run-p -ln test eslint",
+    "ci:all": "npm run pre-push",
+    "pre-push": "run-p -ln test eslint embedme:verify",
     "pre-commit": "pretty-quick --staged && npm run eslint"
   },
   "husky": {

@@ -9,7 +9,7 @@ module.exports = {
     arrowParens: 'always',
     overrides: [
         {
-            files: 'package*json',
+            files: ['package*json', '*.yaml'],
             options: {
                 tabWidth: 2,
             },
