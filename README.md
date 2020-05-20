@@ -1,7 +1,8 @@
 # factory-t
 
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
-[![Greenkeeper badge](https://badges.greenkeeper.io/rodmax/factory-t.svg)](https://greenkeeper.io/)
+![David (path)](https://img.shields.io/david/rodmax/factory-t)
+![npm](https://img.shields.io/npm/v/factory-t)
 
 > pronounced like `ˈfakt(ə)rē tē`
 
