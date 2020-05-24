@@ -4,6 +4,13 @@
 ![David (path)](https://img.shields.io/david/rodmax/factory-t)
 ![npm](https://img.shields.io/npm/v/factory-t)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=alert_status)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=bugs)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=sqale_index)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=code_smells)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/87b64b59dc920192622d/maintainability)](https://codeclimate.com/github/rodmax/factory-t/maintainability)
+
 > pronounced like `ˈfakt(ə)rē tē`
 
 TypeScript library for building data objects
