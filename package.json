@@ -68,6 +68,6 @@
     }
   },
   "dependencies": {
-    "eslint-plugin-jest": "23.9.0"
+    "eslint-plugin-jest": "23.13.1"
   }
 }
