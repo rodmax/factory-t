@@ -19,7 +19,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "build": "rm -rf ./build && tsc --build src",
     "commitlint": "commitlint",

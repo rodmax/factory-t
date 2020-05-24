@@ -3,6 +3,7 @@
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
 ![David (path)](https://img.shields.io/david/rodmax/factory-t)
 ![npm](https://img.shields.io/npm/v/factory-t)
+[![codecov](https://codecov.io/gh/rodmax/factory-t/branch/master/graph/badge.svg)](https://codecov.io/gh/rodmax/factory-t)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=alert_status)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=bugs)](https://sonarcloud.io/dashboard?id=rodmax_factory-t)
