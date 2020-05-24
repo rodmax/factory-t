@@ -1,0 +1,4 @@
+{
+    // See all configuration options here https://docs.renovatebot.com/configuration-options
+    "ignorePaths": "demo-app/*"
+}
