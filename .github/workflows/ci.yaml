@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  ci-all:
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,8 +23,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Run check tasks
-      - run: npm ci
-      - run: npm run ci:all
+        run: |
+          npm ci
+          npm run ci:all
 
       - name: Send coverage to codecov.io
         if: ${{ startsWith(matrix.node-version, '12.') }}
