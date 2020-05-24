@@ -10,12 +10,13 @@
         "target": "es2018",
         "jsx": "react",
         "module": "commonjs",
+        "allowJs": true,
         "lib": ["es2018"],
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
         "resolveJsonModule": true
     },
-    "include": ["./**/*.ts", "./*.ts"],
+    "include": ["./**/*.ts", "./*.ts", ".*.js"],
     "exclude": ["node_modules", "./tests"]
 }
