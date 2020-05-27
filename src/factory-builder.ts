@@ -13,13 +13,6 @@ export class FactoryTBuilder<D extends object, O = unknown> {
         return this;
     }
 
-    public useSequence<K extends keyof D>(k: K, values: ReadonlyArray<D[K]>): this {
-        const size = values.length;
-        // NOTE: we use index - 1 due to factory starts index from 1
-        this.fieldFactoryByKey[k] = ({ index }) => values[(index - 1) % size];
-        return this;
-    }
-
     public extends<ED extends object>(dataShape: ED): FactoryTBuilder<D & ED, O> {
         const newBuilder = (new FactoryTBuilder(dataShape) as unknown) as FactoryTBuilder<
             D & ED,

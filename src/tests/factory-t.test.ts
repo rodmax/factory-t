@@ -1,10 +1,10 @@
-import { factoryTBuilder, factoryT, nullableField, indexField, FactoryT } from 'factory-t';
+import { factoryTBuilder, factoryT, FactoryT, fields } from 'factory-t';
 
 describe(`${FactoryT.name}`, () => {
     describe('item()', () => {
         it('makes each new instance with incremented index', () => {
             const factory = factoryT<{ strWithId: string; id: number }>({
-                id: indexField(),
+                id: fields.index(),
                 strWithId: ({ index }) => `id=${index}`,
             });
 
@@ -20,7 +20,7 @@ describe(`${FactoryT.name}`, () => {
 
         it('recognize null as property value', () => {
             const factory = factoryT<{ id: number | null }>({
-                id: nullableField<number>(null),
+                id: fields.nullable<number>(null),
             });
             expect(factory.item()).toStrictEqual({
                 id: null,
@@ -141,14 +141,14 @@ describe(`${FactoryT.name}`, () => {
     describe('list(...)', () => {
         it('creates array of instances of size provided by "count" input property', () => {
             const factory = factoryT<{ id: number }>({
-                id: indexField(),
+                id: fields.index(),
             });
             expect(factory.list({ count: 3 })).toStrictEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
         });
 
         it('creates array of instances using array of "partials"', () => {
             const factory = factoryT<{ id: number; name: string }>({
-                id: indexField(),
+                id: fields.index(),
                 name: 'default-name',
             });
             expect(
@@ -162,7 +162,7 @@ describe(`${FactoryT.name}`, () => {
 
         it('throw error if "count" < "partials.length"', () => {
             const factory = factoryT<{ id: number }>({
-                id: indexField(),
+                id: fields.index(),
             });
             expect(() =>
                 factory.list({
@@ -174,7 +174,7 @@ describe(`${FactoryT.name}`, () => {
 
         it('throw error if "partials.length" === 0', () => {
             const factory = factoryT<{ id: number }>({
-                id: indexField(),
+                id: fields.index(),
             });
             expect(() =>
                 factory.list({
@@ -188,7 +188,7 @@ describe(`${FactoryT.name}`, () => {
                 ' data from "partials" for first "partials.length" items',
             () => {
                 const factory = factoryT<{ id: number }>({
-                    id: indexField(),
+                    id: fields.index(),
                 });
 
                 expect(
@@ -202,7 +202,7 @@ describe(`${FactoryT.name}`, () => {
 
         it('creates empty array when "count=0"', () => {
             const factory = factoryT<{ id: number }>({
-                id: indexField(),
+                id: fields.index(),
             });
             expect(factory.list({ count: 0 })).toStrictEqual([]);
         });
@@ -230,7 +230,7 @@ describe(`${FactoryT.name}`, () => {
             const dataFactory: FactoryT<Data> = partialFactoryBuilder
                 .extends({
                     lastName: 'as string',
-                    mayBeNull: nullableField(12),
+                    mayBeNull: fields.nullable(12),
                 })
                 .factory();
             expect(dataFactory.item({ mayBeNull: null })).toStrictEqual({

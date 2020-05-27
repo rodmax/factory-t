@@ -1,4 +1,4 @@
-import { factoryT, indexField, sequenceField, nullableField, optionalField } from 'factory-t';
+import { factoryT, fields } from 'factory-t';
 
 describe('examples:README', () => {
     it('introduction example', () => {
@@ -15,14 +15,14 @@ describe('examples:README', () => {
 
         const profileFactory = factoryT<UserDto['profile']>({
             avatarUrl: 'my.site/avatar',
-            language: sequenceField(['EN', 'RU']),
-            statusString: optionalField('sleeping'),
+            language: fields.sequence(['EN', 'RU']),
+            statusString: fields.optional('sleeping'),
         });
 
         const userFactory = factoryT<UserDto>({
-            id: indexField(),
+            id: fields.index(),
             email: (ctx) => `user-${ctx.index}@g.com`,
-            phone: nullableField('+127788'),
+            phone: fields.nullable('+127788'),
             profile: (ctx) => profileFactory.item({ avatarUrl: `/avatars/${ctx.index}` }),
         });
 
