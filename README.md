@@ -55,7 +55,7 @@ interface UserDto {
 <!-- embedme ./src/tests/readme-snippets.test.ts#L1-L1-->
 
 ```ts
-import { factoryT, indexField, sequenceField, nullableField, optionalField } from 'factory-t';
+import { factoryT, fields } from 'factory-t';
 ```
 
 -   create factory (or bunch of factories)
@@ -64,14 +64,14 @@ import { factoryT, indexField, sequenceField, nullableField, optionalField } fro
 ```ts
 const profileFactory = factoryT<UserDto['profile']>({
     avatarUrl: 'my.site/avatar',
-    language: sequenceField(['EN', 'RU']),
-    statusString: optionalField('sleeping'),
+    language: fields.sequence(['EN', 'RU']),
+    statusString: fields.optional('sleeping'),
 });
 
 const userFactory = factoryT<UserDto>({
-    id: indexField(),
+    id: fields.index(),
     email: (ctx) => `user-${ctx.index}@g.com`,
-    phone: nullableField('+127788'),
+    phone: fields.nullable('+127788'),
     profile: (ctx) => profileFactory.item({ avatarUrl: `/avatars/${ctx.index}` }),
 });
 ```

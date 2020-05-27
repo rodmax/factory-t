@@ -30,7 +30,9 @@ export class FactoryT<D extends object, O = unknown> {
                 );
             }
             keysStack.push(k);
-            obj[k] = this.fieldFactoryByKey[k](ctx);
+            obj[k] = (partial as object).hasOwnProperty(k)
+                ? (partial[k] as D[K])
+                : this.fieldFactoryByKey[k](ctx);
             keysStack.pop();
         };
 
@@ -43,10 +45,7 @@ export class FactoryT<D extends object, O = unknown> {
 
         this.itemsCount++;
 
-        return {
-            ...obj,
-            ...partial,
-        };
+        return obj;
     }
 
     public list(
