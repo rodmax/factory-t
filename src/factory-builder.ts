@@ -1,52 +1,45 @@
 import { FieldSimpleFactory, FieldFactoryByKey, DataShape, FieldFactory } from './common';
 import { FactoryT } from './factory';
+import { ExtractDerived, JsonObject } from './type-utils';
 
-export class FactoryTBuilder<D extends object, O = unknown> {
-    private fieldFactoryByKey: FieldFactoryByKey<D, O>;
+export class FactoryTBuilder<D extends JsonObject, O = unknown> {
+    private fieldFactoriesMap: FieldFactoryByKey<D, O>;
 
     constructor(dataShape: DataShape<D, O>) {
-        this.fieldFactoryByKey = this.fieldFactoryByKeyFor(dataShape);
+        this.fieldFactoriesMap = fieldFactoriesMapFromShape(dataShape);
     }
 
-    public useFieldFactory<K extends keyof D>(k: K, fn: FieldFactory<D, K, O>): this {
-        this.fieldFactoryByKey[k] = fn;
+    public setFieldFactory<K extends keyof D>(k: K, fn: FieldFactory<D, K, O>): this {
+        this.fieldFactoriesMap[k] = fn;
         return this;
     }
 
-    public extends<ED extends object>(dataShape: ED): FactoryTBuilder<D & ED, O> {
-        const newBuilder = (new FactoryTBuilder(dataShape) as unknown) as FactoryTBuilder<
-            D & ED,
-            O
-        >;
-        return newBuilder.useFieldFactoryByKey(
-            (this.fieldFactoryByKey as unknown) as Partial<FieldFactoryByKey<D & ED, O>>,
-        );
+    public inheritedBuilder<ED extends D>(
+        dataShape: DataShape<ExtractDerived<ED, D>, O>,
+    ): FactoryTBuilder<ED, O> {
+        const newBuilder = new FactoryTBuilder({
+            ...this.fieldFactoriesMap,
+            ...dataShape,
+        } as DataShape<ED, O>);
+        return newBuilder;
     }
 
     public factory(): FactoryT<D, O> {
-        return new FactoryT(this.fieldFactoryByKey);
+        return new FactoryT(this.fieldFactoriesMap);
     }
+}
 
-    private useFieldFactoryByKey(fieldFactoryByKey: Partial<FieldFactoryByKey<D, O>>): this {
-        this.fieldFactoryByKey = {
-            ...this.fieldFactoryByKey,
-            ...fieldFactoryByKey,
-        };
-        return this;
-    }
-
-    private fieldFactoryByKeyFor(dataShape: DataShape<D, O>): FieldFactoryByKey<D, O> {
-        const config = {} as FieldFactoryByKey<D, O>;
-        ((Object.keys(dataShape) as unknown) as Array<keyof D>).forEach(
-            <K extends keyof D>(key: K) => {
-                const valueOrFactory = dataShape[key];
-                config[key] = isFactory<D[K], O>(valueOrFactory)
-                    ? valueOrFactory
-                    : () => valueOrFactory as D[K];
-            },
-        );
-        return config;
-    }
+export function fieldFactoriesMapFromShape<D extends JsonObject, O>(
+    dataShape: DataShape<D, O>,
+): FieldFactoryByKey<D, O> {
+    const config = {} as FieldFactoryByKey<D, O>;
+    ((Object.keys(dataShape) as unknown) as Array<keyof D>).forEach(<K extends keyof D>(key: K) => {
+        const valueOrFactory = dataShape[key];
+        config[key] = isFactory<D[K], O>(valueOrFactory)
+            ? valueOrFactory
+            : () => valueOrFactory as D[K];
+    });
+    return config;
 }
 
 function isFactory<T, O = unknown>(fn: unknown): fn is FieldSimpleFactory<T, O> {

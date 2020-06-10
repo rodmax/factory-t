@@ -46,8 +46,8 @@ describe(`${FactoryT.name}`, () => {
                 A: 'A',
                 B: 'B:will be rewrite)',
             })
-                .useFieldFactory('C', (ctx) => `C(${ctx.get('A')},${ctx.get('B')})`)
-                .useFieldFactory('B', (ctx) => `B(${ctx.get('A')})`)
+                .setFieldFactory('C', (ctx) => `C(${ctx.inject('A')},${ctx.inject('B')})`)
+                .setFieldFactory('B', (ctx) => `B(${ctx.inject('A')})`)
                 .factory();
 
             expect(factory.item()).toStrictEqual({
@@ -110,9 +110,9 @@ describe(`${FactoryT.name}`, () => {
                 id: ({ index }) => 'parent-' + index,
                 nested: nestedFactory.item(),
             })
-                .useFieldFactory('nested', (ctx) =>
+                .setFieldFactory('nested', (ctx) =>
                     nestedFactory.item({
-                        name: `nested-object-of-${ctx.get('id')}`,
+                        name: `nested-object-of-${ctx.inject('id')}`,
                     }),
                 )
                 .factory();
@@ -130,8 +130,8 @@ describe(`${FactoryT.name}`, () => {
                 a: 'a',
                 b: 'b',
             })
-                .useFieldFactory('a', (ctx) => ctx.get('b'))
-                .useFieldFactory('b', (ctx) => ctx.get('a'))
+                .setFieldFactory('a', (ctx) => ctx.inject('b'))
+                .setFieldFactory('b', (ctx) => ctx.inject('a'))
                 .factory();
 
             expect(() => factory.item()).toThrow('circular');
@@ -227,12 +227,13 @@ describe(`${FactoryT.name}`, () => {
                 union: (ctx) => (ctx.index % 2 ? 'one' : 'two'),
             });
 
-            const dataFactory: FactoryT<Data> = partialFactoryBuilder
-                .extends({
+            const dataFactory = partialFactoryBuilder
+                .inheritedBuilder<Data>({
                     lastName: 'as string',
                     mayBeNull: fields.nullable(12),
                 })
                 .factory();
+
             expect(dataFactory.item({ mayBeNull: null })).toStrictEqual({
                 firstName: 'hello-1',
                 enum: DataType.One,

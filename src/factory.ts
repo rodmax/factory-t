@@ -20,7 +20,7 @@ export class FactoryT<D extends object, O = unknown> {
         const makeField = <K extends keyof D>(k: K) => {
             const ctx: FieldFactoryContext<D, O> = {
                 index: this.itemsCount,
-                get: getField,
+                inject: getField,
                 options,
             };
             if (keysStack.includes(k)) {
