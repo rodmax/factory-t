@@ -93,7 +93,7 @@ expect(userFactory.item({ phone: null })).toStrictEqual({
 });
 ```
 
-See [unit test](./src/tests/factory-t.test.ts) for details
+See [tutorial](./docs/tutorial.md) or/and [unit test](./src/tests/factory-t.test.ts) for details
 
 ## Status
 
