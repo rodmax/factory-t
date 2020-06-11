@@ -119,5 +119,11 @@ describe('docs/tutorial.md', () => {
                 taskIds: [100, 500],
             });
         });
+        it('resetCount() example', () => {
+            const factory = factoryT({ id: fields.index() });
+            expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
+            factory.resetCount();
+            expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
+        });
     });
 });

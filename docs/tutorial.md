@@ -13,6 +13,7 @@
     -   [Single item](#single-item)
     -   [List](#list)
 -   [FAQ](#faq)
+    -   [is it possible to somehow reset the index value](#is-it-possible-to-somehow-reset-the-index-value)
     -   [Is it possible to extend factory](#is-it-possible-to-extend-factory)
 
 <!-- tocstop -->
@@ -151,6 +152,17 @@ expect(userFactory.list({ count: 2, partial: { name: 'custom-name' } })).toStric
 ```
 
 ## FAQ
+
+### is it possible to somehow reset the index value
+
+```ts
+// ../src/tests/tutorial-snippets.test.ts#L123-L126
+
+const factory = factoryT({ id: fields.index() });
+expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
+factory.resetCount();
+expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
+```
 
 ### Is it possible to extend factory
 
