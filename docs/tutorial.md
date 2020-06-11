@@ -122,33 +122,32 @@ factory.item();
 ### List
 
 ```ts
-// ../src/tests/tutorial-snippets.test.ts#L45-L69
+// ../src/tests/tutorial-snippets.test.ts#L45-L68
 
-    interface User {
-        id: number;
-        name: string;
-    }
-    const userFactory = factoryT<User>({
-        id: fields.index(),
-        name: (ctx) => `name-${ctx.index}`,
-    });
-
-    expect(userFactory.list({ count: 2 })).toStrictEqual([
-        { id: 1, name: 'name-1' },
-        { id: 2, name: 'name-2' },
-    ]);
-
-    expect(userFactory.list({ partials: [{ id: 700 }, {}, { id: 900 }] })).toStrictEqual([
-        { id: 700, name: 'name-3' },
-        { id: 4, name: 'name-4' },
-        { id: 900, name: 'name-5' },
-    ]);
-
-    expect(userFactory.list({ count: 2, partial: { name: 'custom-name' } })).toStrictEqual([
-        { id: 6, name: 'custom-name' },
-        { id: 7, name: 'custom-name' },
-    ]);
+interface User {
+    id: number;
+    name: string;
+}
+const userFactory = factoryT<User>({
+    id: fields.index(),
+    name: (ctx) => `name-${ctx.index}`,
 });
+
+expect(userFactory.list({ count: 2 })).toStrictEqual([
+    { id: 1, name: 'name-1' },
+    { id: 2, name: 'name-2' },
+]);
+
+expect(userFactory.list({ partials: [{ id: 700 }, {}, { id: 900 }] })).toStrictEqual([
+    { id: 700, name: 'name-3' },
+    { id: 4, name: 'name-4' },
+    { id: 900, name: 'name-5' },
+]);
+
+expect(userFactory.list({ count: 2, partial: { name: 'custom-name' } })).toStrictEqual([
+    { id: 6, name: 'custom-name' },
+    { id: 7, name: 'custom-name' },
+]);
 ```
 
 ## FAQ
