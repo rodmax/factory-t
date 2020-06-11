@@ -10,19 +10,22 @@ export class FactoryT<D extends object, O = unknown> {
         const keysStack: Array<keyof D> = [];
         const obj = {} as D;
 
-        const getField = <K extends keyof D>(k: K) => {
+        const inject = <K extends keyof D>(k: K) => {
             if (!builtKeys.includes(k)) {
                 makeField(k);
             }
             return obj[k];
         };
+        const ctx: FieldFactoryContext<D, O> = {
+            index: this.itemsCount,
+            inject,
+            options,
+        };
 
         const makeField = <K extends keyof D>(k: K) => {
-            const ctx: FieldFactoryContext<D, O> = {
-                index: this.itemsCount,
-                inject: getField,
-                options,
-            };
+            if (builtKeys.includes(k)) {
+                return;
+            }
             if (keysStack.includes(k)) {
                 keysStack.push(k);
                 throw new Error(
@@ -34,12 +37,10 @@ export class FactoryT<D extends object, O = unknown> {
                 ? (partial[k] as D[K])
                 : this.fieldFactoryByKey[k](ctx);
             keysStack.pop();
+            builtKeys.push(k);
         };
 
         for (const k of this.dataKeys()) {
-            if (builtKeys.includes(k)) {
-                continue;
-            }
             makeField(k);
         }
 
