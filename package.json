@@ -73,6 +73,6 @@
     }
   },
   "dependencies": {
-    "eslint-plugin-jest": "23.13.2"
+    "eslint-plugin-jest": "23.16.0"
   }
 }
