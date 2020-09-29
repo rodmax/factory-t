@@ -1,5 +1,8 @@
 # factory-t
 
+<img height="200px" src="./docs/factory-t-logo.png"><br>
+[We can’t be silent! #SavePandaDoc](https://savebelarusit.org/en/)
+
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
 ![David (path)](https://img.shields.io/david/rodmax/factory-t)
 ![npm](https://img.shields.io/npm/v/factory-t)
