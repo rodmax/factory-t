@@ -14,8 +14,9 @@
   "main": "build/index.js",
   "files": [
     "build/",
+    "src/",
     "README.md",
-    "CHANGELOG",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
