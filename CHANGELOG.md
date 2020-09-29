@@ -1,3 +1,28 @@
+# [0.3.0-beta.1](https://github.com/rodmax/factory-t/compare/0.3.0-beta.0...0.3.0-beta.1) (2020-09-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency eslint-plugin-jest to v23.13.1 ([#61](https://github.com/rodmax/factory-t/issues/61)) ([87e485d](https://github.com/rodmax/factory-t/commit/87e485d0a8d1488dd59465ee603cac6738216365))
+* **deps:** update dependency eslint-plugin-jest to v23.13.2 ([488605c](https://github.com/rodmax/factory-t/commit/488605ce78fb0814ef1279b97fda5cb741853d6c))
+
+
+### Code Refactoring
+
+* rename some public names ([7020da3](https://github.com/rodmax/factory-t/commit/7020da3fc17e808a36e2bcabfab86fa14bac8850))
+
+
+### Features
+
+* add optionalField(), sequencesField() field factory helpers ([589e40e](https://github.com/rodmax/factory-t/commit/589e40e4ec18e4de5f46e0ca6b15938f0da83d4e))
+
+
+### BREAKING CHANGES
+
+* too many small things rewritten, see tutorial
+
+
+
 <a name="0.3.0-beta.0"></a>
 # [0.3.0-beta.0](https://github.com/rodmax/factory-t/compare/0.2.1...0.3.0-beta.0) (2020-05-18)
 
