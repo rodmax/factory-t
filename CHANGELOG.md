@@ -1,3 +1,7 @@
+# [0.3.0](https://github.com/rodmax/factory-t/compare/0.3.0-beta.1...0.3.0) (2020-09-29)
+
+
+
 # [0.3.0-beta.1](https://github.com/rodmax/factory-t/compare/0.3.0-beta.0...0.3.0-beta.1) (2020-09-29)
 
 
