@@ -1,6 +1,6 @@
 # factory-t
 
-<img height="200px" src="./docs/factory-t-logo.png"><br>
+<img height="200px" src="https://github.com/rodmax/factory-t/raw/master/docs/factory-t-logo.png"><br>
 [We can’t be silent! #SavePandaDoc](https://savebelarusit.org/en/)
 
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
