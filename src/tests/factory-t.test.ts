@@ -36,6 +36,24 @@ describe(`${FactoryT.name}`, () => {
             });
         });
 
+        it('handle optional property value when field factory not provided', () => {
+            interface WithOptional {
+                name: string;
+                password?: string;
+            }
+            const factory = factoryT<WithOptional>({
+                name: 'hello',
+            });
+
+            expect(factory.item()).toStrictEqual({
+                name: 'hello',
+            });
+            expect(factory.item({ password: 'pass-value' })).toStrictEqual({
+                name: 'hello',
+                password: 'pass-value',
+            });
+        });
+
         it('resolve props dependencies', () => {
             const factory = factoryTBuilder<{
                 C: string;
