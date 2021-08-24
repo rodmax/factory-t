@@ -39,7 +39,7 @@ describe(`${FactoryT.name}`, () => {
         it('handle optional property value when field factory not provided', () => {
             interface WithOptional {
                 name: string;
-                password?: string;
+                optional?: string;
             }
             const factory = factoryT<WithOptional>({
                 name: 'hello',
@@ -48,9 +48,9 @@ describe(`${FactoryT.name}`, () => {
             expect(factory.item()).toStrictEqual({
                 name: 'hello',
             });
-            expect(factory.item({ password: 'pass-value' })).toStrictEqual({
+            expect(factory.item({ optional: 'optional-value' })).toStrictEqual({
                 name: 'hello',
-                password: 'pass-value',
+                optional: 'optional-value',
             });
         });
 
