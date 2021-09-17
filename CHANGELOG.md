@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/rodmax/factory-t/compare/0.3.0...0.3.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* handle optional field values when no field factory passed ([#111](https://github.com/rodmax/factory-t/issues/111)) ([b64dc49](https://github.com/rodmax/factory-t/commit/b64dc490ddf2e82f657cc639adf84e11a25cab26))
+
+
+
 # [0.3.0](https://github.com/rodmax/factory-t/compare/0.3.0-beta.1...0.3.0) (2020-09-29)
 
 
