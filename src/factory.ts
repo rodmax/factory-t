@@ -45,6 +45,18 @@ export class FactoryT<D extends object, O = unknown> {
         }
 
         this.itemsCount++;
+        (Object.keys(partial) as Array<keyof D>).forEach((k) => {
+            if (this.fieldFactoryByKey[k]) {
+                return;
+            }
+            // we can get here, if three conditions occur:
+            // 1. k - optional field
+            // 2. field factory not provided for this field(TS allow this only for optional fields)
+            // 3. partial[k] was passed to item() method (TS should check valid type of this value)
+            // In this case we just assign this value to result object
+            // Source issue #110
+            obj[k] = partial[k] as D[keyof D];
+        });
 
         return obj;
     }
