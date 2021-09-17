@@ -4,7 +4,7 @@
   "description": "App to test integration with factory-t",
   "main": "index.js",
   "dependencies": {
-    "typescript": "3.9.2"
+    "typescript": "3.9.10"
   },
   "devDependencies": {},
   "scripts": {
