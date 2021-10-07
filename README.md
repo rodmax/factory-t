@@ -1,7 +1,6 @@
 # factory-t
 
-<img height="200px" src="https://github.com/rodmax/factory-t/raw/master/docs/factory-t-logo.png"><br>
-[We can’t be silent! #SavePandaDoc](https://savebelarusit.org/en/)
+<img height="100px" src="docs/factory-t-logo.svg"><br>
 
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
 ![David (path)](https://img.shields.io/david/rodmax/factory-t)
@@ -17,9 +16,8 @@
 
 > pronounced like `ˈfakt(ə)rē tē`
 
-TypeScript library for building data objects
-Useful for unit tests and mocking data during development
-
+TypeScript library for building data objects.<br>
+Useful for unit tests and mocking data during development<br>
 With strong typing in mind
 
 ## Goals
