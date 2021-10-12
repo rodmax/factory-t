@@ -32,3 +32,10 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_IO_TOKEN }}
         run: curl -s https://codecov.io/bash | bash
+
+      - name: SonarCloud analyze
+        if: ${{ startsWith(matrix.node-version, '12.') }}
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
