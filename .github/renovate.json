@@ -1,4 +1,5 @@
 {
-    // See all configuration options here https://docs.renovatebot.com/configuration-options
-    "ignorePaths": "demo-app/*"
+    "extends": ["config:base", ":disableDependencyDashboard"],
+    "ignorePaths": "demo-app/*",
+    "schedule": "after 6pm on friday"
 }
