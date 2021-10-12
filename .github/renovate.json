@@ -1,5 +1,5 @@
 {
     "extends": ["config:base", ":disableDependencyDashboard"],
-    "ignorePaths": "demo-app/*",
+    "ignorePaths": ["demo-app/*"],
     "schedule": "after 6pm on friday"
 }
