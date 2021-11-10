@@ -1,3 +1,9 @@
+// @ts-check
+
+/**
+ * @typedef { import('eslint').Linter.Config } EslintConfig
+ * @type { EslintConfig }
+ */
 module.exports = {
     root: true,
     env: {
@@ -11,10 +17,8 @@ module.exports = {
             modules: true,
         },
     },
-    plugins: ['@typescript-eslint', 'jest'],
-    extends: ['plugin:jest/all'],
+    plugins: ['@typescript-eslint'],
     rules: {
-        'jest/prefer-expect-assertions': 'off',
         'no-console': 'error',
         'no-debugger': 'error',
     },
