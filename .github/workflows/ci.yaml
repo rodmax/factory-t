@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [16.x, 17.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
           npm run ci:all
 
       - name: Send coverage to codecov.io
-        if: ${{ startsWith(matrix.node-version, '12.') }}
+        if: ${{ startsWith(matrix.node-version, '16.') }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_IO_TOKEN }}
         run: curl -s https://codecov.io/bash | bash
