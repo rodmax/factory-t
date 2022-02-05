@@ -37,7 +37,7 @@
     "ci:all": "npm run pre-push",
     "pre-push": "run-p -ln test eslint md:verify",
     "pre-commit": "pretty-quick --staged && npm run eslint",
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "prepublishOnly": "./tools/pre-publish.sh"
   },
   "author": "Maxim Rodionov <rodionov.m.m@gmail.com>",
