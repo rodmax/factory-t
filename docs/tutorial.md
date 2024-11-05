@@ -28,7 +28,7 @@ In most cases, a factory can be created using the `factoryT(config)` function
 
 > `config` is an object that specifies both the type and logic of fields generating for future objects
 
-<!-- embedme ../src/tests/tutorial-snippets.test.ts#L6-L17-->
+<!-- embedme ../src/tests/tutorial-snippets.test.ts#L7-L18-->
 
 ```ts
 interface User {
@@ -89,7 +89,7 @@ In some advanced cases a factory is constructed using a builder, such as:
 -   one field depends from another(s)
 
 ```ts
-// ../src/tests/tutorial-snippets.test.ts#L21-L39
+// ../src/tests/tutorial-snippets.test.ts#L22-L40
 
 interface User {
     id: number;
@@ -123,7 +123,7 @@ factory.item();
 ### List
 
 ```ts
-// ../src/tests/tutorial-snippets.test.ts#L45-L68
+// ../src/tests/tutorial-snippets.test.ts#L46-L69
 
 interface User {
     id: number;
@@ -156,7 +156,7 @@ expect(userFactory.list({ count: 2, partial: { name: 'custom-name' } })).toStric
 ### is it possible to somehow reset the index value
 
 ```ts
-// ../src/tests/tutorial-snippets.test.ts#L123-L126
+// ../src/tests/tutorial-snippets.test.ts#L124-L127
 
 const factory = factoryT({ id: fields.index() });
 expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
@@ -167,7 +167,7 @@ expect(factory.list({ count: 2 })).toStrictEqual([{ id: 1 }, { id: 2 }]);
 ### Is it possible to extend factory
 
 ```ts
-// ../src/tests/tutorial-snippets.test.ts#L74-L120
+// ../src/tests/tutorial-snippets.test.ts#L75-L121
 
 interface BaseTask {
     id: number;
@@ -203,14 +203,14 @@ const epicTaskFactory = baseTaskFactoryBuilder
     })
     .factory();
 
-expect(butTaskFactory.item()).toStrictEqual<BugTask>({
+expect(butTaskFactory.item()).toStrictEqual({
     id: 1,
     type: 'BUG',
     priority: 'high',
     affectedVersion: '0.0.1',
 });
 
-expect(epicTaskFactory.item()).toStrictEqual<EpicTask>({
+expect(epicTaskFactory.item()).toStrictEqual({
     id: 1,
     type: 'EPIC',
     priority: 'high',
