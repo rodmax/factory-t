@@ -1,4 +1,5 @@
 import { factoryT, fields, factoryTBuilder } from 'factory-t';
+import { describe, it, expect } from '@jest/globals';
 
 describe('docs/tutorial.md', () => {
     describe('create factory', () => {
@@ -105,14 +106,14 @@ describe('docs/tutorial.md', () => {
                 })
                 .factory();
 
-            expect(butTaskFactory.item()).toStrictEqual<BugTask>({
+            expect(butTaskFactory.item()).toStrictEqual({
                 id: 1,
                 type: 'BUG',
                 priority: 'high',
                 affectedVersion: '0.0.1',
             });
 
-            expect(epicTaskFactory.item()).toStrictEqual<EpicTask>({
+            expect(epicTaskFactory.item()).toStrictEqual({
                 id: 1,
                 type: 'EPIC',
                 priority: 'high',
