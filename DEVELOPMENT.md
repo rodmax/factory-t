@@ -20,7 +20,7 @@ please follow [conventional commits format](https://www.conventionalcommits.org/
 
 ## Publish new version
 
--   checkout to latest `master` branch
+-   checkout to latest `main` branch
 -   run `make version x.y.z`
 -   run `make publish`
 -   run `make push`
