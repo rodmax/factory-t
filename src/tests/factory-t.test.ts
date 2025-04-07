@@ -1,4 +1,5 @@
 import { factoryTBuilder, factoryT, FactoryT, fields } from 'factory-t';
+import { describe, it, expect } from '@jest/globals';
 
 describe(`${FactoryT.name}`, () => {
     describe('item()', () => {
@@ -242,6 +243,7 @@ describe(`${FactoryT.name}`, () => {
             const partialFactoryBuilder = factoryTBuilder({
                 firstName: (ctx) => `hello-${ctx.index}`,
                 enum: DataType.One,
+                // eslint-disable-next-line jest/no-conditional-in-test
                 union: (ctx) => (ctx.index % 2 ? 'one' : 'two'),
             });
 

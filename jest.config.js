@@ -4,10 +4,14 @@ module.exports = {
     moduleNameMapper: {
         '^factory-t$': '<rootDir>/src/index',
     },
-    globals: {
-        'ts-jest': {
-            tsconfig: './src/tests/tsconfig.json',
-        },
+    transform: {
+        '^.+\\.tsx?$': [
+            'ts-jest',
+            {
+                babel: true,
+                tsconfig: './src/tests/tsconfig.json',
+            },
+        ],
     },
     collectCoverageFrom: ['./src/*.ts', './src/**/*.ts'],
 };

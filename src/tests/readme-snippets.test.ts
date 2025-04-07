@@ -1,4 +1,5 @@
 import { factoryT, fields } from 'factory-t';
+import { describe, it, expect } from '@jest/globals';
 
 describe('examples:README', () => {
     it('introduction example', () => {
