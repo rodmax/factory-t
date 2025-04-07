@@ -1,3 +1,26 @@
+## 1.0.0 (2025-04-07)
+
+* docs: add "publish new version" section ([1b0fcf4](https://github.com/rodmax/factory-t/commit/1b0fcf4))
+* chore: change logo ([a39824d](https://github.com/rodmax/factory-t/commit/a39824d))
+* chore: fix config.commitizen.path value in package.json ([e9749fc](https://github.com/rodmax/factory-t/commit/e9749fc))
+* chore: fix(force) audit issues ([3c1c706](https://github.com/rodmax/factory-t/commit/3c1c706))
+* chore: update all dev dependencies (#132) ([624798b](https://github.com/rodmax/factory-t/commit/624798b)), closes [#132](https://github.com/rodmax/factory-t/issues/132)
+* chore: update deps (#139) ([8cc1709](https://github.com/rodmax/factory-t/commit/8cc1709)), closes [#139](https://github.com/rodmax/factory-t/issues/139)
+* chore(deps): update dev dependencies (#116) ([eaa2d72](https://github.com/rodmax/factory-t/commit/eaa2d72)), closes [#116](https://github.com/rodmax/factory-t/issues/116)
+* chore(deps): upgrade to typescript 4+, nodejs 18+ ([541509a](https://github.com/rodmax/factory-t/commit/541509a))
+* ci: revert send coverage to sonar (#129) ([09b263d](https://github.com/rodmax/factory-t/commit/09b263d)), closes [#129](https://github.com/rodmax/factory-t/issues/129)
+* ci(renovate): fix ignorePaths value ([416da30](https://github.com/rodmax/factory-t/commit/416da30)), closes [#95](https://github.com/rodmax/factory-t/issues/95)
+* ci(renovate): remove redundant config file ([861a65f](https://github.com/rodmax/factory-t/commit/861a65f))
+* ci(sonarcloud): enable check using actions (#128) ([d085697](https://github.com/rodmax/factory-t/commit/d085697)), closes [#128](https://github.com/rodmax/factory-t/issues/128)
+
+
+### BREAKING CHANGE
+
+* all clients need version of typescipt >=4.7.4 and nodejs >= 18 lts
+
+* ci: update ci matrix to [18.x, 20.x]
+
+
 ## [0.3.1](https://github.com/rodmax/factory-t/compare/0.3.0...0.3.1) (2021-09-17)
 
 
