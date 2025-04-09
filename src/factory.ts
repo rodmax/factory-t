@@ -2,13 +2,20 @@ import { FieldFactoryByKey, FieldFactoryContext } from './common';
 
 export class FactoryT<D extends object, O = unknown> {
     private itemsCount: number = 1;
+    private defaultOptions: O;
 
-    constructor(private fieldFactoryByKey: FieldFactoryByKey<D, O>) {}
+    constructor(
+        private fieldFactoryByKey: FieldFactoryByKey<D, O>,
+        defaultOptions?: O,
+    ) {
+        this.defaultOptions = defaultOptions as O;
+    }
 
     public item(partial: Partial<D> = {}, options?: O): D {
         const builtKeys: Array<keyof D> = [];
         const keysStack: Array<keyof D> = [];
         const obj = {} as D;
+        options = options ?? this.defaultOptions;
 
         const inject = <K extends keyof D>(k: K) => {
             if (!builtKeys.includes(k)) {
@@ -71,6 +78,7 @@ export class FactoryT<D extends object, O = unknown> {
         options?: O,
     ): D[] {
         const params = inParams as PossibleListParams<D>;
+        options = options ?? this.defaultOptions;
 
         if (params.partials) {
             if (params.partials.length === 0) {

@@ -270,25 +270,27 @@ describe(`${FactoryT.name}`, () => {
         }
 
         interface Options {
-            variant: 'google' | 'yahoo';
+            variant: 'google' | 'yahoo' | 'default';
         }
 
         function factoryWithOptions(): FactoryT<Data, Options> {
-            return factoryT<Data, Options>({
-                email: (ctx) => {
-                    const mailVendor = ctx.options ? ctx.options.variant : 'unknown';
-                    return `e@${mailVendor}`;
+            return factoryT<Data, Options>(
+                {
+                    email: (ctx) => `e@${ctx.options.variant}.com`,
                 },
-            });
+                { variant: 'default' },
+            );
         }
 
         it('item({...}, options) reflected to passed options', () => {
             const dataFactory = factoryWithOptions();
             expect(dataFactory.item({}, { variant: 'google' })).toStrictEqual({
-                email: 'e@google',
+                email: 'e@google.com',
             });
-            expect(dataFactory.item({ email: '123@custom' }, { variant: 'google' })).toStrictEqual({
-                email: '123@custom',
+            expect(
+                dataFactory.item({ email: '123@custom.com' }, { variant: 'google' }),
+            ).toStrictEqual({
+                email: '123@custom.com',
             });
         });
 
@@ -296,7 +298,18 @@ describe(`${FactoryT.name}`, () => {
             const dataFactory = factoryWithOptions();
             expect(
                 dataFactory.list({ partials: [{ email: 'custom' }, {}] }, { variant: 'google' }),
-            ).toStrictEqual([{ email: 'custom' }, { email: 'e@google' }]);
+            ).toStrictEqual([{ email: 'custom' }, { email: 'e@google.com' }]);
+        });
+
+        it('item() and list() should use default options', () => {
+            const dataFactory = factoryWithOptions();
+            expect(dataFactory.item()).toStrictEqual({
+                email: 'e@default.com',
+            });
+            expect(dataFactory.list({ count: 2 })).toStrictEqual([
+                { email: 'e@default.com' },
+                { email: 'e@default.com' },
+            ]);
         });
     });
 });
