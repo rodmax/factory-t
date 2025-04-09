@@ -4,8 +4,10 @@ import { ExtractDerived, JsonObject } from './type-utils';
 
 export class FactoryTBuilder<D extends JsonObject, O = unknown> {
     private fieldFactoriesMap: FieldFactoryByKey<D, O>;
+    private defaultOptions: O | undefined;
 
-    constructor(dataShape: DataShape<D, O>) {
+    constructor(dataShape: DataShape<D, O>, defaultOptions?: O) {
+        this.defaultOptions = defaultOptions;
         this.fieldFactoriesMap = fieldFactoriesMapFromShape(dataShape);
     }
 
@@ -25,7 +27,7 @@ export class FactoryTBuilder<D extends JsonObject, O = unknown> {
     }
 
     public factory(): FactoryT<D, O> {
-        return new FactoryT(this.fieldFactoriesMap);
+        return new FactoryT(this.fieldFactoriesMap, this.defaultOptions);
     }
 }
 
@@ -33,7 +35,7 @@ export function fieldFactoriesMapFromShape<D extends JsonObject, O>(
     dataShape: DataShape<D, O>,
 ): FieldFactoryByKey<D, O> {
     const config = {} as FieldFactoryByKey<D, O>;
-    ((Object.keys(dataShape) as unknown) as Array<keyof D>).forEach(<K extends keyof D>(key: K) => {
+    (Object.keys(dataShape) as unknown as Array<keyof D>).forEach(<K extends keyof D>(key: K) => {
         const valueOrFactory = dataShape[key];
         config[key] = isFactory<D[K], O>(valueOrFactory)
             ? valueOrFactory

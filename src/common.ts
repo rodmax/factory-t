@@ -15,7 +15,7 @@ export type FieldFactoryByKey<D extends JsonObject, O = unknown> = {
 
 interface FiledSimpleFactoryContext<O> {
     index: number;
-    options?: O;
+    options: O;
 }
 
 export type FieldSimpleFactory<T, O = unknown> = (ctx: FiledSimpleFactoryContext<O>) => T;
