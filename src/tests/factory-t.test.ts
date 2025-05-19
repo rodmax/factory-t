@@ -2,6 +2,12 @@ import { factoryTBuilder, factoryT, FactoryT, fields, FactoryTBuilder } from 'fa
 import { describe, it, expect } from '@jest/globals';
 
 describe(`${FactoryT.name}`, () => {
+    it('factoryT calls factoryTBuilder and returns a FactoryT', () => {
+        const shape = { foo: 'bar' };
+        const factory = factoryT(shape);
+        expect(factory.item()).toStrictEqual({ foo: 'bar' });
+    });
+
     describe('item()', () => {
         it('makes each new instance with incremented index', () => {
             const factory = factoryT<{ strWithId: string; id: number }>({
@@ -315,6 +321,11 @@ describe(`${FactoryT.name}`, () => {
 });
 
 describe(`${FactoryTBuilder.name}`, () => {
+    it('factoryTBuilder returns a new FactoryTBuilder instance', () => {
+        const shape = { foo: 'bar' };
+        const builder = factoryTBuilder(shape);
+        expect(builder).toBeInstanceOf(Object);
+    });
     it('instantiate FactoryTBuilder directly', () => {
         const builder = new FactoryTBuilder<{ foo: string }>({ foo: 'bar' });
         expect(builder.factory().item()).toStrictEqual({ foo: 'bar' });
