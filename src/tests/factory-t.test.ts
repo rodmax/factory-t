@@ -1,4 +1,4 @@
-import { factoryTBuilder, factoryT, FactoryT, fields } from 'factory-t';
+import { factoryTBuilder, factoryT, FactoryT, fields, FactoryTBuilder } from 'factory-t';
 import { describe, it, expect } from '@jest/globals';
 
 describe(`${FactoryT.name}`, () => {
@@ -311,5 +311,19 @@ describe(`${FactoryT.name}`, () => {
                 { email: 'e@default.com' },
             ]);
         });
+    });
+});
+
+describe(`${FactoryTBuilder.name}`, () => {
+    it('instantiate FactoryTBuilder directly', () => {
+        const builder = new FactoryTBuilder<{ foo: string }>({ foo: 'bar' });
+        expect(builder.factory().item()).toStrictEqual({ foo: 'bar' });
+    });
+    it('instantiate FactoryTBuilder directly with defaultOptions', () => {
+        const builder = new FactoryTBuilder<{ foo: string }, { opt: number }>(
+            { foo: 'bar' },
+            { opt: 42 },
+        );
+        expect(builder.factory().item()).toStrictEqual({ foo: 'bar' });
     });
 });
