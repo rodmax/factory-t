@@ -30,9 +30,9 @@ describe('examples:README', () => {
         expect(userFactory.item({ phone: null })).toStrictEqual({
             id: 1,
             email: 'user-1@g.com',
-            phone: null, // override by passed partial to item(...)
+            phone: null, // overridden by the partial passed to item(...)
             profile: {
-                avatarUrl: '/avatars/1', // override by userFactory using its index
+                avatarUrl: '/avatars/1', // overridden by userFactory using its index
                 language: 'EN',
                 statusString: 'sleeping',
             },

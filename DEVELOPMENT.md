@@ -2,7 +2,8 @@
 
 ## Tests
 
-To decide what to test keep in mind [Use Case Coverage](https://kentcdodds.com/blog/how-to-know-what-to-test)
+To decide what to test, keep in mind
+[Use Case Coverage](https://kentcdodds.com/blog/how-to-know-what-to-test).
 
 ```bash
 npm run test
@@ -13,14 +14,15 @@ npm run test:watch
 
 ## Workflow
 
-We use [commitizen](https://github.com/commitizen/cz-cli) tool and approach to write commit messages
+We use the [commitizen](https://github.com/commitizen/cz-cli) tool and approach to
+write commit messages.
 
-so if you decide to add some more code to this project,
-please follow [conventional commits format](https://www.conventionalcommits.org/en/v1.0.0-beta.3/)
+If you decide to add more code to this project, please follow the
+[conventional commits format](https://www.conventionalcommits.org/en/v1.0.0-beta.3/).
 
-## Publish new version
+## Publish a new version
 
--   checkout to latest `main` branch
--   run `make version x.y.z`
--   run `make publish`
--   run `make push`
+- Checkout the latest `main` branch
+- Run `make version x.y.z`
+- Run `make publish`
+- Run `make push`
