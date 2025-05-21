@@ -33,6 +33,7 @@
     "integration-test": "./tools/integration-test.sh",
     "env:md-files": "env MD_FILES=\"\"",
     "eslint": "eslint -f visualstudio ./src",
+    "md:lint": "markdownlint-cli2 \"./*.md\" \"#CHANGELOG.md\"",
     "md:embedme": "embedme README.md docs/*.md",
     "md:toc": "markdown-toc -i docs/tutorial.md",
     "md:build-all": "run-s -ln md:toc md:embedme",
