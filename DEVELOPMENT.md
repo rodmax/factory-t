@@ -22,7 +22,7 @@ If you decide to add more code to this project, please follow the
 
 ## Publish a new version
 
-- Checkout the latest `main` branch
-- Run `make version x.y.z`
-- Run `make publish`
-- Run `make push`
+-   Checkout the latest `main` branch
+-   Run `make version x.y.z`
+-   Run `make publish`
+-   Run `make push`
