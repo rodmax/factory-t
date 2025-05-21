@@ -40,7 +40,7 @@
     "md:verify": "npm run md:embedme -- --verify",
     "ci:all": "npm run pre-push",
     "pre-push": "run-p -ln test eslint md:verify",
-    "pre-commit": "pretty-quick --staged && npm run eslint",
+    "pre-commit": "pretty-quick --staged && npm run eslint && npm run md:lint",
     "prepare": "husky",
     "prepublishOnly": "./tools/pre-publish.sh"
   },
