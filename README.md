@@ -4,11 +4,7 @@
 
 ![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
 [![npm](https://img.shields.io/npm/v/factory-t)](https://www.npmjs.com/package/factory-t)
-[![codecov](https://codecov.io/gh/rodmax/factory-t/branch/main/graph/badge.svg)](https://codecov.io/gh/rodmax/factory-t)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/87b64b59dc920192622d/maintainability)](https://codeclimate.com/github/rodmax/factory-t/maintainability)
-
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rodmax_factory-t)
+[![SonarQualityStatus](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rodmax_factory-t)
 
 > pronounced like `ˈfakt(ə)rē tē`
 

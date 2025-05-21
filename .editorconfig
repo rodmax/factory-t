@@ -7,7 +7,7 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 
-[package.json, *.yaml]
+[package.json, *.yaml, *.yml]
 indent_size = 2
 
 

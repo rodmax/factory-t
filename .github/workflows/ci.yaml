@@ -15,31 +15,25 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clones is recommended for improving the relevancy of reporting(from SonarQube docs)
+          fetch-depth: 0
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Run check tasks
+      - name: Check code
         run: |
           npm ci
           npm run ci:all
 
-      - name: Send coverage to codecov.io
-        if: ${{ startsWith(matrix.node-version, '16.') }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_IO_TOKEN }}
-        run: curl -s https://codecov.io/bash | bash
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      # Read more details about the SonarQube setup here:
+      # https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/
       - name: SonarQube Scan
+        if: ${{ startsWith(matrix.node-version, '20.') }} # send coverage only once
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
