@@ -27,19 +27,10 @@ jobs:
           npm ci
           npm run ci:all
 
-      - name: Send coverage to codecov.io
-        if: ${{ startsWith(matrix.node-version, '16.') }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_IO_TOKEN }}
-        run: curl -s https://codecov.io/bash | bash
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      # Read more details about the SonarQube setup here:
+      # https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/
       - name: SonarQube Scan
+        if: ${{ startsWith(matrix.node-version, '20.') }} # send coverage only once
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
