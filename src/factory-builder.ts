@@ -4,7 +4,7 @@ import { ExtractDerived, JsonObject } from './type-utils';
 
 export class FactoryTBuilder<D extends JsonObject, O = unknown> {
     private fieldFactoriesMap: FieldFactoryByKey<D, O>;
-    private defaultOptions: O | undefined;
+    private readonly defaultOptions: O | undefined;
 
     constructor(dataShape: DataShape<D, O>, defaultOptions?: O) {
         this.defaultOptions = defaultOptions;

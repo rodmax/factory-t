@@ -2,10 +2,10 @@ import { FieldFactoryByKey, FieldFactoryContext } from './common';
 
 export class FactoryT<D extends object, O = unknown> {
     private itemsCount: number = 1;
-    private defaultOptions: O;
+    private readonly defaultOptions: O;
 
     constructor(
-        private fieldFactoryByKey: FieldFactoryByKey<D, O>,
+        private readonly fieldFactoryByKey: FieldFactoryByKey<D, O>,
         defaultOptions?: O,
     ) {
         this.defaultOptions = defaultOptions as O;

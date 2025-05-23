@@ -11,7 +11,7 @@
         "jsx": "react",
         "module": "commonjs",
         "allowJs": true,
-        "lib": ["es2018"],
+        "lib": ["es2018", "dom"],
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
