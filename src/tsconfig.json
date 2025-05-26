@@ -11,11 +11,12 @@
         "jsx": "react",
         "module": "commonjs",
         "allowJs": true,
-        "lib": ["es2018", "dom"],
+        "lib": ["es2018"],
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "include": ["./**/*.ts", "./*.ts", ".*.js"],
     "exclude": ["node_modules", "./tests"]
