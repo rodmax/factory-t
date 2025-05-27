@@ -15,7 +15,8 @@
         "noImplicitAny": true,
         "strictFunctionTypes": true,
         "alwaysStrict": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "include": ["./**/*.ts", "./*.ts", ".*.js"],
     "exclude": ["node_modules", "./tests"]
