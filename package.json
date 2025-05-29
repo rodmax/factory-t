@@ -38,7 +38,7 @@
     "version": "./tools/version.sh",
     "preversion": "./tools/pre-version.sh",
     "env:md-files": "env MD_FILES=\"\"",
-    "md:lint": "markdownlint-cli2 \"./*.md\" \"!CHANGELOG.md\"",
+    "md:lint": "markdownlint-cli2 \"./*.md\" \"./docs/*.md\" \"!CHANGELOG.md\"",
     "md:embedme": "embedme README.md docs/*.md",
     "md:embedme:verify": "npm run md:embedme -- --verify",
     "md:toc": "markdown-toc -i docs/tutorial.md",
