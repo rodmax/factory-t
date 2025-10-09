@@ -338,3 +338,81 @@ describe(`${FactoryTBuilder.name}`, () => {
         expect(builder.factory().item()).toStrictEqual({ foo: 'bar' });
     });
 });
+
+describe(`nested data structure generation`, () => {
+    interface Item {
+        id: string;
+        title: string;
+    }
+    interface User {
+        id: string;
+        name: string;
+        items: Item[];
+    }
+
+    it('basic', () => {
+        const itemFactory = factoryT<Item>({
+            id: (ctx) => `item-${ctx.index}`,
+            title: (ctx) => `item-title-${ctx.index}`,
+        });
+
+        const userFactory = factoryT<User>({
+            id: (ctx) => `user-${ctx.index}`,
+            name: (ctx) => `user-name-${ctx.index}`,
+            items: () => itemFactory.list({ count: 2 }),
+        });
+
+        expect(userFactory.list({ count: 2 })).toStrictEqual([
+            {
+                id: 'user-1',
+                name: 'user-name-1',
+                items: [
+                    { id: 'item-1', title: 'item-title-1' },
+                    { id: 'item-2', title: 'item-title-2' },
+                ],
+            },
+            {
+                id: 'user-2',
+                name: 'user-name-2',
+                items: [
+                    { id: 'item-3', title: 'item-title-3' },
+                    { id: 'item-4', title: 'item-title-4' },
+                ],
+            },
+        ]);
+    });
+    it('advanced', () => {
+        const itemFactory = factoryT<Item, { userId: string }>(
+            {
+                id: (ctx) => `item-${ctx.options.userId}-${ctx.index}`,
+                title: (ctx) => `item-title-${ctx.options.userId}-${ctx.index}`,
+            },
+            { userId: 'user-0' },
+        );
+
+        const userFactory = factoryT<User>({
+            id: (ctx) => `user-${ctx.index}`,
+            name: (ctx) => `user-name-${ctx.index}`,
+            items: (ctx) => itemFactory.list({ count: 2 }, { userId: `user-${ctx.index}` }),
+        });
+
+        expect(userFactory.list({ count: 2 })).toStrictEqual([
+            {
+                id: 'user-1',
+                name: 'user-name-1',
+                items: [
+                    { id: 'item-user-1-1', title: 'item-title-user-1-1' },
+                    { id: 'item-user-1-2', title: 'item-title-user-1-2' },
+                ],
+            },
+            {
+                id: 'user-2',
+                name: 'user-name-2',
+                items: [
+                    { id: 'item-user-2-3', title: 'item-title-user-2-3' },
+                    { id: 'item-user-2-4', title: 'item-title-user-2-4' },
+                ],
+            },
+        ]);
+    });
+});
