@@ -24,8 +24,7 @@
   },
   "scripts": {
     "build": "rm -rf ./build && tsc --build src",
-    "test": "npm run test:all",
-    "test:all": "run-s test:format test:types test:lint test:md test:unit test:integration",
+    "test": "run-s test:format test:types test:lint test:md test:unit test:integration",
     "test:format": "prettier --check .",
     "test:types": "tsc --noEmit --project ./src/tsconfig.json",
     "test:unit": "jest --coverage",
@@ -43,10 +42,10 @@
     "md:embedme:verify": "npm run md:embedme -- --verify",
     "md:toc": "markdown-toc -i docs/tutorial.md",
     "md:build-all": "run-s -ln md:toc md:embedme",
-    "ci:all": "npm run test:all",
+    "ci:all": "npm run test",
     "pre-push": "run-p -ln test:unit md:embedme:verify",
     "pre-commit": "run-s format:staged test:lint md:lint",
-    "format:staged": "npm run format -- --staged",
+    "format:staged": "pretty-quick --staged",
     "format": "pretty-quick",
     "prepare": "husky",
     "prepublishOnly": "./tools/pre-publish.sh"
