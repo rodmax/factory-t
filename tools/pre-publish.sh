@@ -5,7 +5,7 @@ echo "[🐼] Check HEAD commit has tag..."
 git describe --exact-match HEAD
 
 echo "[🐼] Tests, lints..."
-npm run pre-push
+npm run test:all
 
 echo "[🐼] Build..."
 npm run build

@@ -1,15 +1,23 @@
 # Development
 
+## Codebase health
+
+To verify codebase health
+
+```bash
+npm test
+```
+
 ## Tests
 
 To decide what to test, keep in mind
 [Use Case Coverage](https://kentcdodds.com/blog/how-to-know-what-to-test).
 
 ```bash
-npm run test
+npm run test:unit
 
 # watch mode
-npm run test:watch
+npm run test:unit:watch
 ```
 
 ## Workflow

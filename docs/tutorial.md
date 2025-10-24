@@ -26,7 +26,8 @@ Before we start generating objects, we need to create the factory itself
 
 In most cases, a factory can be created using the `factoryT(config)` function
 
-> `config` is an object that specifies both the type and logic of fields generating for future objects
+> `config` is an object that specifies both the type and logic of fields
+> generating for future objects
 
 <!-- embedme ../src/tests/tutorial-snippets.test.ts#L7-L18-->
 
