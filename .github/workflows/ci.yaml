@@ -15,7 +15,7 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Disabling shallow clones is recommended for improving the relevancy of reporting(from SonarQube docs)
           fetch-depth: 0
