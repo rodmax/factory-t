@@ -2,7 +2,7 @@
 
 ![factory-t](docs/factory-t-logo.svg)
 
-![build/tests](https://github.com/rodmax/factory-t/workflows/build/tests/badge.svg)
+[![build/tests](https://github.com/rodmax/factory-t/actions/workflows/ci.yaml/badge.svg)](https://github.com/rodmax/factory-t/actions/workflows/ci.yaml?query=branch%3Amain)
 [![npm](https://img.shields.io/npm/v/factory-t)](https://www.npmjs.com/package/factory-t)
 [![SonarQualityStatus](https://sonarcloud.io/api/project_badges/measure?project=rodmax_factory-t&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rodmax_factory-t)
 
