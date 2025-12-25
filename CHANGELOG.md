@@ -1,3 +1,20 @@
+## 1.1.0 (2025-12-25)
+
+* chore:  add markdown lint (#174) ([0d3825e](https://github.com/rodmax/factory-t/commit/0d3825e)), closes [#174](https://github.com/rodmax/factory-t/issues/174)
+* chore: add types check in ci and rearrange package scripts (#183) ([f88c4b0](https://github.com/rodmax/factory-t/commit/f88c4b0)), closes [#183](https://github.com/rodmax/factory-t/issues/183)
+* chore: change master to main in all places (#160) ([1d63946](https://github.com/rodmax/factory-t/commit/1d63946)), closes [#160](https://github.com/rodmax/factory-t/issues/160)
+* chore: fix sonarqube issues (#177) ([579e664](https://github.com/rodmax/factory-t/commit/579e664)), closes [#177](https://github.com/rodmax/factory-t/issues/177)
+* chore: fix SonarQube settings remove other code quality badges (#175) ([9894cc3](https://github.com/rodmax/factory-t/commit/9894cc3)), closes [#175](https://github.com/rodmax/factory-t/issues/175)
+* chore: fix test command in pre-version.sh script ([b5104b5](https://github.com/rodmax/factory-t/commit/b5104b5))
+* chore: remove .vscode/settings.json from git control ([2b66303](https://github.com/rodmax/factory-t/commit/2b66303))
+* chore: update badge with github status (#204) ([8e2fde6](https://github.com/rodmax/factory-t/commit/8e2fde6)), closes [#204](https://github.com/rodmax/factory-t/issues/204)
+* chore: use SHA for sonarqube scan action (#192) ([96de04d](https://github.com/rodmax/factory-t/commit/96de04d)), closes [#192](https://github.com/rodmax/factory-t/issues/192)
+* chore(sonarqube): send metadata to sonarqube via ci (#159) ([b592e15](https://github.com/rodmax/factory-t/commit/b592e15)), closes [#159](https://github.com/rodmax/factory-t/issues/159)
+* feat: add mandatory default options (#162) ([1b40aac](https://github.com/rodmax/factory-t/commit/1b40aac)), closes [#162](https://github.com/rodmax/factory-t/issues/162)
+* docs: add sonarqube badge ([0d6a9b8](https://github.com/rodmax/factory-t/commit/0d6a9b8))
+
+
+
 ## 1.0.0 (2025-04-07)
 
 * docs: add "publish new version" section ([1b0fcf4](https://github.com/rodmax/factory-t/commit/1b0fcf4))
