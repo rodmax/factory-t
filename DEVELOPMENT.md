@@ -30,7 +30,8 @@ If you decide to add more code to this project, please follow the
 
 ## Publish a new version
 
--   Checkout the latest `main` branch
--   Run `make version x.y.z`
--   Run `make publish`
--   Run `make push`
+1. Checkout the latest `main` branch
+1. Run `npm version x.y.z` - lint & check -> "bump version" commit -> git tag
+1. Make sure Changelog and version looks good
+1. Run `npm publish` - publish :rocket:
+1. Run `git push`
