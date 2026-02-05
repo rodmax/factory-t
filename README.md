@@ -1,6 +1,6 @@
 # factory-t
 
-![factory-t](docs/factory-t-logo.svg)
+![factory-t](docs/factory-t-poster.png)
 
 [![build/tests](https://github.com/rodmax/factory-t/actions/workflows/ci.yaml/badge.svg)](https://github.com/rodmax/factory-t/actions/workflows/ci.yaml?query=branch%3Amain)
 [![npm](https://img.shields.io/npm/v/factory-t)](https://www.npmjs.com/package/factory-t)
