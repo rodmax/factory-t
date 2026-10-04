@@ -2,7 +2,7 @@
   "name": "demo-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Test packed factory-t compatibility with TypeScript 4.7.4",
+  "description": "App to test integration with factory-t (TypeScript 4.7.4):",
   "engines": {
     "node": ">=24.0.0"
   },
