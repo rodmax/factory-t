@@ -20,7 +20,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=18.20.4"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "build": "rm -rf ./build && tsc --build src",
