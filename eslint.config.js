@@ -1,4 +1,3 @@
-const eslint = require('@eslint/js');
 const jestPlugin = require('eslint-plugin-jest');
 const tseslint = require('typescript-eslint');
 

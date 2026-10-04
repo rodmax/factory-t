@@ -1,7 +1,9 @@
 import { JsonObject } from './type-utils';
 
-export interface FieldFactoryContext<D extends JsonObject, O = unknown>
-    extends FieldSimpleFactoryContext<O> {
+export interface FieldFactoryContext<
+    D extends JsonObject,
+    O = unknown,
+> extends FieldSimpleFactoryContext<O> {
     inject<K extends keyof D>(k: K): D[K];
 }
 

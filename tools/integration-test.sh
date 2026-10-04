@@ -19,7 +19,7 @@ npm pack
 
 echo "STEP 2: install factory-t, build demo-app and test it"
 cd "${demoAppDir}"
-npm i --no-save ${packageArchive}
+npm i --no-save --ignore-scripts ${packageArchive}
 npm run test
 
 echo "AFTER ALL: cleanup"

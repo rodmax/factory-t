@@ -2,19 +2,19 @@
 
 <!-- toc -->
 
--   [Create factory](#create-factory)
-    -   [Using config](#using-config)
-        -   [Specify field](#specify-field)
-            -   [By value](#by-value)
-            -   [By function](#by-function)
-            -   [By build-in `fields` helpers](#by-build-in-fields-helpers)
-    -   [Factory builder](#factory-builder)
--   [Generate data objects](#generate-data-objects)
-    -   [Single item](#single-item)
-    -   [List](#list)
--   [FAQ](#faq)
-    -   [is it possible to somehow reset the index value](#is-it-possible-to-somehow-reset-the-index-value)
-    -   [Is it possible to extend factory](#is-it-possible-to-extend-factory)
+- [Create factory](#create-factory)
+    - [Using config](#using-config)
+        - [Specify field](#specify-field)
+            - [By value](#by-value)
+            - [By function](#by-function)
+            - [By build-in `fields` helpers](#by-build-in-fields-helpers)
+    - [Factory builder](#factory-builder)
+- [Generate data objects](#generate-data-objects)
+    - [Single item](#single-item)
+    - [List](#list)
+- [FAQ](#faq)
+    - [is it possible to somehow reset the index value](#is-it-possible-to-somehow-reset-the-index-value)
+    - [Is it possible to extend factory](#is-it-possible-to-extend-factory)
 
 <!-- tocstop -->
 
@@ -87,7 +87,7 @@ factoryT({
 
 In some advanced cases a factory is constructed using a builder, such as:
 
--   one field depends from another(s)
+- one field depends from another(s)
 
 ```ts
 // ../src/tests/tutorial-snippets.test.ts#L22-L40

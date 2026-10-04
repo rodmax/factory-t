@@ -22,8 +22,7 @@ npm run test:unit:watch
 
 ## Workflow
 
-We use the [commitizen](https://github.com/commitizen/cz-cli) tool and approach to
-write commit messages.
+We write commit messages with [commitizen](https://github.com/commitizen/cz-cli).
 
 If you decide to add more code to this project, please follow the
 [conventional commits format](https://www.conventionalcommits.org/en/v1.0.0-beta.3/).
