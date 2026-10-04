@@ -10,9 +10,7 @@ assert(factory.item().index === 1, 'factory.item().index should return 1 at firs
 assert(factory.item().index === 2, 'factory.item().index should return 2 at second call');
 
 function assert(condition: unknown, message: string): void {
-    // eslint-disable-next-line no-console
-    console.assert(condition, message + '\nSee demo-app/index.ts for details');
     if (!condition) {
-        process.exit(23);
+        throw new Error(message + '\nSee demo-app/index.ts for details');
     }
 }
