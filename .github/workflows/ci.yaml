@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
       # Read more details about the SonarQube setup here:
       # https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/
       - name: SonarQube Scan
-        if: ${{ startsWith(matrix.node-version, '20.') }} # send coverage only once
+        if: ${{ startsWith(matrix.node-version, '24.') }} # send coverage only once
         uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

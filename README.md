@@ -16,11 +16,11 @@ With strong typing in mind.
 
 ## Goals
 
--   Provide a factory for building data objects based on a predefined config
--   The factory instance should **strongly depend** on the target TypeScript
-    interface, so if the interface changes, the factory should not be built
-    until it is synced with the interface changes
--   All kinds of API "sugar" are appreciated, but with typings in mind
+- Provide a factory for building data objects based on a predefined config
+- The factory instance should **strongly depend** on the target TypeScript
+  interface, so if the interface changes, the factory should not be built
+  until it is synced with the interface changes
+- All kinds of API "sugar" are appreciated, but with typings in mind
 
 ## Install
 
@@ -32,7 +32,8 @@ npm install factory-t
 
 To get started you need to:
 
--   Design your data type
+- Design your data type
+
 <!-- embedme ./src/tests/readme-snippets.test.ts#L6-L15-->
 
 ```ts
@@ -48,14 +49,16 @@ interface UserDto {
 }
 ```
 
--   Import the right tools
+- Import the right tools
+
 <!-- embedme ./src/tests/readme-snippets.test.ts#L1-L1-->
 
 ```ts
 import { factoryT, fields } from 'factory-t';
 ```
 
--   Create a factory (or a set of factories)
+- Create a factory (or a set of factories)
+
 <!-- embedme ./src/tests/readme-snippets.test.ts#L17-L28-->
 
 ```ts
@@ -73,7 +76,7 @@ const userFactory = factoryT<UserDto>({
 });
 ```
 
--   Use it to build objects
+- Use it to build objects
 
 <!-- embedme ./src/tests/readme-snippets.test.ts#L30-L39-->
 
