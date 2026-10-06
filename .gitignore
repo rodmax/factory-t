@@ -4,3 +4,5 @@ coverage/
 .vscode
 factory-t*.tgz
 .vscode/settings.json
+*.code-workspace
+cspell.*
