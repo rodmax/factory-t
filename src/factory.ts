@@ -12,13 +12,13 @@ export class FactoryT<D extends object, O = unknown> {
     }
 
     public item(partial: Partial<D> = {}, options?: O): D {
-        const builtKeys: Array<keyof D> = [];
-        const keysStack: Array<keyof D> = [];
+        const builtKeys = new Set<keyof D>();
+        const keysStack = new Set<keyof D>();
         const obj = {} as D;
         options = options ?? this.defaultOptions;
 
         const inject = <K extends keyof D>(k: K) => {
-            if (!builtKeys.includes(k)) {
+            if (!builtKeys.has(k)) {
                 makeField(k);
             }
             return obj[k];
@@ -30,21 +30,20 @@ export class FactoryT<D extends object, O = unknown> {
         };
 
         const makeField = <K extends keyof D>(k: K) => {
-            if (builtKeys.includes(k)) {
+            if (builtKeys.has(k)) {
                 return;
             }
-            if (keysStack.includes(k)) {
-                keysStack.push(k);
+            if (keysStack.has(k)) {
                 throw new Error(
-                    `circular dependency cause between fields: ${keysStack.join('->')}`,
+                    `circular dependency cause between fields: ${[...keysStack, k].join('->')}`,
                 );
             }
-            keysStack.push(k);
-            obj[k] = (partial as object).hasOwnProperty(k)
+            keysStack.add(k);
+            obj[k] = Object.prototype.hasOwnProperty.call(partial, k)
                 ? (partial[k] as D[K])
                 : this.fieldFactoryByKey[k](ctx);
-            keysStack.pop();
-            builtKeys.push(k);
+            keysStack.delete(k);
+            builtKeys.add(k);
         };
 
         for (const k of this.dataKeys()) {
