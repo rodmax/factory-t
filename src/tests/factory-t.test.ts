@@ -93,6 +93,23 @@ describe(`${FactoryT.name}`, () => {
             });
         });
 
+        it('accepts null-prototype partials', () => {
+            const factory = factoryT({ id: fields.index(), name: 'x' });
+            const partial: Partial<{ id: number; name: string }> = Object.create(null);
+            partial.name = 'y';
+
+            expect(factory.item(partial)).toStrictEqual({ id: 1, name: 'y' });
+        });
+
+        it('accepts partials that shadow hasOwnProperty', () => {
+            const factory = factoryT({ id: fields.index(), name: 'x' });
+            const partial = Object.defineProperty({ name: 'y' }, 'hasOwnProperty', {
+                value: 'shadowed',
+            });
+
+            expect(factory.item(partial)).toStrictEqual({ id: 1, name: 'y' });
+        });
+
         it('works with nested objects/arrays passed directly', () => {
             const factory = factoryT<{
                 nestedObj: { child: string };
@@ -159,7 +176,37 @@ describe(`${FactoryT.name}`, () => {
                 .setFieldFactory('b', (ctx) => ctx.inject('a'))
                 .factory();
 
-            expect(() => factory.item()).toThrow('circular');
+            expect(() => factory.item()).toThrow(
+                new Error('circular dependency cause between fields: a->b->a'),
+            );
+        });
+
+        it.each([
+            ['a', 'a->b->c->a'],
+            ['b', 'a->b->c->b'],
+            ['c', 'a->b->c->c'],
+        ] as const)('preserves the dependency path when c injects %s', (dependency, path) => {
+            const factory = factoryTBuilder({ a: '', b: '', c: '' })
+                .setFieldFactory('a', (ctx) => ctx.inject('b'))
+                .setFieldFactory('b', (ctx) => ctx.inject('c'))
+                .setFieldFactory('c', (ctx) => ctx.inject(dependency))
+                .factory();
+
+            expect(() => factory.item()).toThrow(
+                new Error(`circular dependency cause between fields: ${path}`),
+            );
+        });
+
+        it('builds a shared dependency only once per item', () => {
+            let builds = 0;
+            const factory = factoryTBuilder({ a: 0, b: 0, shared: 0 })
+                .setFieldFactory('a', (ctx) => ctx.inject('shared'))
+                .setFieldFactory('b', (ctx) => ctx.inject('shared'))
+                .setFieldFactory('shared', () => ++builds)
+                .factory();
+
+            expect(factory.item()).toStrictEqual({ a: 1, b: 1, shared: 1 });
+            expect(factory.item()).toStrictEqual({ a: 2, b: 2, shared: 2 });
         });
     });
 
@@ -234,6 +281,28 @@ describe(`${FactoryT.name}`, () => {
     });
 
     describe('factoryBuilder.extends(...)', () => {
+        it('preserves default options in inherited builders and allows per-call overrides', () => {
+            const base = factoryTBuilder(
+                { label: (ctx) => `label-${ctx.options.prefix}` },
+                { prefix: 'base' },
+            );
+            const derived = base
+                .inheritedBuilder<{ label: string; extra: string }>({
+                    extra: (ctx) => `extra-${ctx.options.prefix}`,
+                })
+                .factory();
+
+            expect(base.factory().item()).toStrictEqual({ label: 'label-base' });
+            expect(derived.item()).toStrictEqual({ label: 'label-base', extra: 'extra-base' });
+            expect(derived.item({}, { prefix: 'custom' })).toStrictEqual({
+                label: 'label-custom',
+                extra: 'extra-custom',
+            });
+            expect(derived.list({ count: 1 })).toStrictEqual([
+                { label: 'label-base', extra: 'extra-base' },
+            ]);
+        });
+
         it('creates new factory that extends base factory', () => {
             enum DataType {
                 One,

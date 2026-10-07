@@ -19,10 +19,13 @@ export class FactoryTBuilder<D extends JsonObject, O = unknown> {
     public inheritedBuilder<ED extends D>(
         dataShape: DataShape<ExtractDerived<ED, D>, O>,
     ): FactoryTBuilder<ED, O> {
-        const newBuilder = new FactoryTBuilder({
-            ...this.fieldFactoriesMap,
-            ...dataShape,
-        } as DataShape<ED, O>);
+        const newBuilder = new FactoryTBuilder(
+            {
+                ...this.fieldFactoriesMap,
+                ...dataShape,
+            } as DataShape<ED, O>,
+            this.defaultOptions,
+        );
         return newBuilder;
     }
 
