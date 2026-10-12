@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/rodmax/factory-t/compare/1.1.0...2.0.0) (2026-10-12)
+
+### BREAKING CHANGES
+
+* Node.js >= 24 is now required (was >= 18.20.4) ([#227](https://github.com/rodmax/factory-t/issues/227))
+
+### Bug Fixes
+
+* preserve builder options and improve item field lookups ([#228](https://github.com/rodmax/factory-t/issues/228)) ([7480b86](https://github.com/rodmax/factory-t/commit/7480b861b6dc5f0af147da063badbae7c36c8779)), closes [#226](https://github.com/rodmax/factory-t/issues/226)
+
 ## 1.1.0 (2025-12-25)
 
 * chore:  add markdown lint (#174) ([0d3825e](https://github.com/rodmax/factory-t/commit/0d3825e)), closes [#174](https://github.com/rodmax/factory-t/issues/174)
