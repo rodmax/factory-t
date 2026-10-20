@@ -54,7 +54,7 @@ interface UserDto {
 <!-- embedme ./src/tests/readme-snippets.test.ts#L1-L1-->
 
 ```ts
-import { factoryT, fields } from 'factory-t';
+import { factoryScope, factoryT, fields } from 'factory-t';
 ```
 
 - Create a factory (or a set of factories)
@@ -95,6 +95,43 @@ expect(userFactory.item({ phone: null })).toStrictEqual({
 
 See [tutorial](./docs/tutorial.md) and/or
 [unit test](./src/tests/factory-t.test.ts) for details.
+
+## Resetting counters
+
+Each factory keeps its own item counter (`ctx.index`, `fields.index()`, etc.),
+and `factory.resetCount()` resets only that factory. To reset a group of
+factories at once, including factories used only inside other factories'
+fields, create them in a scope:
+
+<!-- embedme ./src/tests/readme-snippets.test.ts#L43-L54-->
+
+```ts
+const scope = factoryScope();
+
+const tagFactory = scope.factoryT<{ id: number }>({ id: fields.index() });
+const postFactory = scope.factoryT<{ id: number; tag: { id: number } }>({
+    id: fields.index(),
+    tag: () => tagFactory.item(),
+});
+
+postFactory.list({ count: 3 });
+scope.resetCounts(); // resets postFactory and tagFactory
+
+expect(postFactory.item()).toStrictEqual({ id: 1, tag: { id: 1 } });
+```
+
+Factories built with `scope.factoryTBuilder(...).factory()` and its
+`inheritedBuilder(...)` register in the same scope. Factories created with the
+top-level `factoryT` / `factoryTBuilder` don't belong to any scope.
+
+When to reset:
+
+- Vitest and Jest load modules fresh for each test file, so counters start over
+  by themselves.
+- Playwright and Cypress reuse modules across test files in a worker, so
+  counters carry over between files. Reset before each test, for example
+  `test.beforeEach(() => scope.resetCounts())` or an automatic Playwright
+  fixture.
 
 ## Status
 
