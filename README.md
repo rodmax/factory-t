@@ -124,6 +124,9 @@ Factories built with `scope.factoryTBuilder(...).factory()` and its
 `inheritedBuilder(...)` register in the same scope. Factories created with the
 top-level `factoryT` / `factoryTBuilder` don't belong to any scope.
 
+A scope keeps a reference to every factory created in it, so create scoped
+factories once, at module level, rather than inside functions or tests.
+
 When to reset:
 
 - Vitest and Jest load modules fresh for each test file, so counters start over
