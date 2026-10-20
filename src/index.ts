@@ -1,11 +1,20 @@
 import { DataShape } from './common';
 import { FactoryT } from './factory';
 import { FactoryTBuilder } from './factory-builder';
+import { FactoryScope } from './scope';
 import { JsonObject } from './type-utils';
 
 export { FactoryT } from './factory';
 export { fields } from './fields';
 export { FactoryTBuilder };
+export { FactoryScope };
+
+/**
+ * Creates a scope that groups factories so their item counters can be reset together
+ */
+export function factoryScope(): FactoryScope {
+    return new FactoryScope();
+}
 
 export function factoryTBuilder<D extends JsonObject>(
     dataShape: DataShape<D, void>,

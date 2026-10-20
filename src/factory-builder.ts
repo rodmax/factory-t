@@ -1,12 +1,17 @@
 import { FieldSimpleFactory, FieldFactoryByKey, DataShape, FieldFactory } from './common';
 import { FactoryT } from './factory';
+import type { FactoryScope } from './scope';
 import { ExtractDerived, JsonObject } from './type-utils';
 
 export class FactoryTBuilder<D extends JsonObject, O = unknown> {
     private fieldFactoriesMap: FieldFactoryByKey<D, O>;
     private readonly defaultOptions: O | undefined;
 
-    constructor(dataShape: DataShape<D, O>, defaultOptions?: O) {
+    constructor(
+        dataShape: DataShape<D, O>,
+        defaultOptions?: O,
+        private readonly scope?: FactoryScope,
+    ) {
         this.defaultOptions = defaultOptions;
         this.fieldFactoriesMap = fieldFactoriesMapFromShape(dataShape);
     }
@@ -25,12 +30,15 @@ export class FactoryTBuilder<D extends JsonObject, O = unknown> {
                 ...dataShape,
             } as DataShape<ED, O>,
             this.defaultOptions,
+            this.scope,
         );
         return newBuilder;
     }
 
     public factory(): FactoryT<D, O> {
-        return new FactoryT(this.fieldFactoriesMap, this.defaultOptions);
+        const factory = new FactoryT(this.fieldFactoriesMap, this.defaultOptions);
+        this.scope?.register(factory);
+        return factory;
     }
 }
 

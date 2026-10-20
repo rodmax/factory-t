@@ -1,4 +1,4 @@
-import { factoryT, fields } from 'factory-t';
+import { factoryScope, factoryT, fields } from 'factory-t';
 import { describe, it, expect } from '@jest/globals';
 
 describe('examples:README', () => {
@@ -37,5 +37,20 @@ describe('examples:README', () => {
                 statusString: 'sleeping',
             },
         });
+    });
+
+    it('scopes example', () => {
+        const scope = factoryScope();
+
+        const tagFactory = scope.factoryT<{ id: number }>({ id: fields.index() });
+        const postFactory = scope.factoryT<{ id: number; tag: { id: number } }>({
+            id: fields.index(),
+            tag: () => tagFactory.item(),
+        });
+
+        postFactory.list({ count: 3 });
+        scope.resetCounts(); // resets postFactory and tagFactory
+
+        expect(postFactory.item()).toStrictEqual({ id: 1, tag: { id: 1 } });
     });
 });

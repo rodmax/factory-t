@@ -1,4 +1,12 @@
-import { factoryTBuilder, factoryT, FactoryT, fields, FactoryTBuilder } from 'factory-t';
+import {
+    factoryTBuilder,
+    factoryT,
+    FactoryT,
+    fields,
+    FactoryTBuilder,
+    factoryScope,
+    FactoryScope,
+} from 'factory-t';
 import { describe, it, expect } from '@jest/globals';
 
 describe(`${FactoryT.name}`, () => {
@@ -483,5 +491,75 @@ describe(`nested data structure generation`, () => {
                 ],
             },
         ]);
+    });
+});
+
+describe(`${FactoryScope.name}`, () => {
+    it('resets counters of all factories created in the scope, including nested ones', () => {
+        const scope = factoryScope();
+        const child = scope.factoryT({ id: fields.index() });
+        const parent = scope.factoryT({ id: fields.index(), child: () => child.item() });
+
+        const expected0 = { id: 1, child: { id: 1 } };
+        const expected1 = { id: 2, child: { id: 2 } };
+        const expected2 = { id: 1, child: { id: 1 } };
+
+        const result0 = parent.item();
+        const result1 = parent.item();
+        scope.resetCounts();
+        const result2 = parent.item();
+
+        expect(result0).toStrictEqual(expected0);
+        expect(result1).toStrictEqual(expected1);
+        expect(result2).toStrictEqual(expected2);
+    });
+
+    it('registers factories built by its builders and their inherited builders', () => {
+        const scope = factoryScope();
+        const builder = scope.factoryTBuilder<{ id: number }>({ id: fields.index() });
+        const inherited = builder.inheritedBuilder<{ id: number; name: string }>({ name: 'x' });
+        const baseFactory = builder.factory();
+        const inheritedFactory = inherited.factory();
+
+        const expected0 = [{ id: 1 }, { id: 1, name: 'x' }];
+        const expected1 = [{ id: 2 }, { id: 2, name: 'x' }];
+        const expected2 = [{ id: 1 }, { id: 1, name: 'x' }];
+
+        const result0 = [baseFactory.item(), inheritedFactory.item()];
+        const result1 = [baseFactory.item(), inheritedFactory.item()];
+        scope.resetCounts();
+        const result2 = [baseFactory.item(), inheritedFactory.item()];
+
+        expect(result0).toStrictEqual(expected0);
+        expect(result1).toStrictEqual(expected1);
+        expect(result2).toStrictEqual(expected2);
+    });
+
+    it('passes default options to factories', () => {
+        const scope = factoryScope();
+        const factory = scope.factoryT<{ id: string }, { prefix: string }>(
+            { id: ({ index, options }) => `${options.prefix}${index}` },
+            { prefix: 'u-' },
+        );
+
+        expect(factory.item()).toStrictEqual({ id: 'u-1' });
+    });
+
+    it('does not reset factories outside the scope', () => {
+        const scope = factoryScope();
+        const otherScope = factoryScope();
+        const inScope = scope.factoryT({ id: fields.index() });
+        const inOtherScope = otherScope.factoryT({ id: fields.index() });
+        const unscoped = factoryT({ id: fields.index() });
+
+        const expected0 = [{ id: 1 }, { id: 1 }, { id: 1 }];
+        const expected1 = [{ id: 1 }, { id: 2 }, { id: 2 }];
+
+        const result0 = [inScope.item(), inOtherScope.item(), unscoped.item()];
+        scope.resetCounts();
+        const result1 = [inScope.item(), inOtherScope.item(), unscoped.item()];
+
+        expect(result0).toStrictEqual(expected0);
+        expect(result1).toStrictEqual(expected1);
     });
 });
